@@ -1,0 +1,61 @@
+<br>
+<button type="button" class="btn btn-primary btn-sm mr-2" tooltip="Voltar" (click)="Voltar()"><i class="fa-solid fa-circle-left"></i></button>
+<br>
+<app-titulo [titulo]=titulo></app-titulo>
+<br>
+<div class="form-row">
+    <div class="card rounded shadow-sm">
+      <form [formGroup]="form">
+        <div class="p-3">
+          <div class="form-row">
+            <div class="form-group col-md-6" id="centralizar">
+              <label class="required" style="font-weight: bold;">Nome</label>
+              <input type="text" class="form-control" [ngClass]="cssValidator(f.nome)" formControlName="nome" [(ngModel)]="usuario.nome">
+              <div *ngIf="f.nome.errors?.required && f.nome.touched" class="invalid-feedback">
+                Nome é obrigatório.
+              </div>
+              <div *ngIf="f.nome.errors?.minlength" class="invalid-feedback">
+                Nome deve ter no mínimo 3 caracteres.
+              </div>
+              <div *ngIf="f.nome.errors?.maxlength" class="invalid-feedback">
+                Nome deve ter no máximo 50 caracteres.
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6" id="centralizar">
+              <label class="required" style="font-weight: bold;">Email</label>
+              <input type="email" class="form-control" [ngClass]="cssValidator(f.email)" placeholder="Email" formControlName="email" [(ngModel)]="usuario.email">
+              <div *ngIf="f.email.errors?.required && f.email.touched" class="invalid-feedback">
+                Email é obrigatório.
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6" id="centralizar">
+              <label style="font-weight: bold;">Senha</label>
+              <input name="password" type="password" id="password" class="form-control" [ngClass]="cssValidator(f.senha)" placeholder="Senha" formControlName="senha" [(ngModel)]="usuario.senha">
+              <div *ngIf="f.senha.errors?.required && f.senha.touched" class="invalid-feedback">
+                Senha é obrigatório.
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6" id="centralizar">
+              <label style="font-weight: bold;">Repetir Senha</label>
+              <input type="password" class="form-control" [ngClass]="cssValidator(f.repetirSenha)" formControlName="repetirSenha" placeholder="Repetir Senha">
+              <div *ngIf="f.repetirSenha.errors?.required && f.repetirSenha.touched" class="invalid-feedback">
+                Repetir a senha é obrigatório.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div id="botaoCadastrar">
+            <button class="btn btn-lg btn-primary btn-block" [disabled]="!form.valid" (click)="Salvar()" type="submit">Salvar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+</div>
+<label class="required">Campos Obrigatórios</label>

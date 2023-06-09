@@ -1,0 +1,174 @@
+<br>
+<div id="content">
+<div class="card rounded shadow-sm p-3" style="text-align: center;">
+  <div style="display: inline-block; white-space: pre-line;">
+    <h1><b>DANFE</b></h1>
+    <h2><b>Número da Nota: {{notaFiscalId}}</b></h2>
+    <h2>Entrada(1) Saida(2): 2</h2>
+    <h2>Valor Total da Nota: {{notaFiscal.precoTotal}}</h2>
+    <h2>Data: {{notaFiscal.dataCadastroNotaFiscal | date: "dd/MM/yyyy"}}</h2>
+    <h2>Status da NF: {{notaFiscal.statusNota}}</h2>
+  </div>
+</div>
+<br>
+<div class="card rounded shadow-sm p-3 card-min-width">
+  <table id="contentToConvert" class="table table-striped">
+      <thead class="thead-dark">
+        <tr>
+          <th>Natureza da Operação</th>
+          <th>Chave da Nota NF</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Venda de Mercadoria</td>
+          <td>{{notaFiscal.chaveAcesso}}</td>
+        </tr>
+      </tbody>
+  </table>
+    </div>
+    <br>
+<div>
+  <label><b>Remetente</b></label>
+</div>
+<div class="card rounded shadow-sm p-3 card-min-width">
+<table id="contentToConvert" class="table table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>Nome/Razão Social</th>
+        <th>CNPJ</th>
+        <th>Inscrição Estadual</th>
+        <th>Inscrição Municipal</th>
+        <th>Endereço</th>
+        <th>Bairro</th>
+        <th>CEP</th>
+        <th>Municipio</th>
+        <th>Telefone</th>
+        <th>UF</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{empresa.nome}}</td>
+        <td>{{empresa.cnpj}}</td>
+        <td>{{empresa.inscricaoMunicipal}}</td>
+        <td>{{empresa.inscricaoEstadual}}</td>
+        <td>{{empresa.endereco}} {{empresa.numero}}</td>
+        <td>{{empresa.bairro}}</td>
+        <td>{{empresa.cep}}</td>
+        <td>{{empresa.municipio}}</td>
+        <td>{{empresa.telefone}}</td>
+        <td>{{empresa.uf}}</td>
+      </tr>
+    </tbody>
+</table>
+  </div>
+  <br>
+  <div>
+    <label><b>Destinatario</b></label>
+  </div>
+  <div class="card rounded shadow-sm p-3 card-min-width">
+  <table id="contentToConvert" class="table table-striped">
+      <thead class="thead-dark">
+        <tr>
+          <th>Nome/Razão Social</th>
+          <th>CPF/CNPJ</th>
+          <th>Inscrição Estadual</th>
+          <th>Inscrição Municipal</th>
+          <th>Endereço</th>
+          <th>Bairro</th>
+          <th>CEP</th>
+          <th>Municipio</th>
+          <th>Telefone</th>
+          <th>UF</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{cliente.nome}}</td>
+          <td>{{cliente.cpfcnpj}}</td>
+          <td>{{cliente.inscricaoMunicipal}}</td>
+          <td>{{cliente.inscricaoEstadual}}</td>
+          <td>{{cliente.endereco}} {{cliente.numero}}</td>
+          <td>{{cliente.bairro}}</td>
+          <td>{{cliente.cep}}</td>
+          <td>{{cliente.municipio}}</td>
+          <td>{{cliente.telefone}}</td>
+          <td>{{cliente.uf}}</td>
+        </tr>
+      </tbody>
+  </table>
+    </div>
+<br>
+<div>
+  <label><b>Transportador</b></label>
+</div>
+<div class="card rounded shadow-sm p-3 card-min-width">
+<table id="contentToConvert" class="table table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>Nome/Razão Social</th>
+        <th>CNPJ</th>
+        <th>Inscrição Estadual</th>
+        <th>Inscrição Municipal</th>
+        <th>Endereço</th>
+        <th>Bairro</th>
+        <th>CEP</th>
+        <th>Municipio</th>
+        <th>Telefone</th>
+        <th>UF</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{transportador.nome}}</td>
+        <td>{{transportador.cnpj}}</td>
+        <td>{{transportador.inscricaoMunicipal}}</td>
+        <td>{{transportador.inscricaoEstadual}}</td>
+        <td>{{transportador.endereco}} {{transportador.numero}}</td>
+        <td>{{transportador.bairro}}</td>
+        <td>{{transportador.cep}}</td>
+        <td>{{transportador.municipio}}</td>
+        <td>{{transportador.telefone}}</td>
+        <td>{{transportador.uf}}</td>
+      </tr>
+    </tbody>
+</table>
+  </div>
+  <br>
+  <div>
+    <label><b>Produtos</b></label>
+  </div>
+  <div class="card rounded shadow-sm p-3 card-min-width">
+  <table id="contentToConvert" class="table table-striped">
+      <thead class="thead-dark">
+        <tr>
+          <th>Codigo</th>
+          <th>Nome</th>
+          <th>Quantidade de Venda</th>
+          <th>Preço de Venda</th>
+          <th>Preço Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let produto of produtos">
+          <td>{{produto.codigo}}</td>
+          <td>{{produto.nome}}</td>
+          <td>{{produto.quantidadeVenda}}</td>
+          <td>{{produto.precoVenda | currency: 'BRL' }}</td>
+          <td>{{produto.precoVendaTotal | currency: 'BRL' }}</td>
+        </tr>
+      </tbody>
+  </table>
+    </div>
+    <br>
+    <div>
+      <label><b>Dados Adicionais</b></label>
+    </div>
+    <div class="form-control form-control-lg card rounded shadow-sm p-3">
+      <textarea id="dadosAdicionais" readonly>
+        Email Remetente: {{empresa.email}}
+        Email Destinatario: {{cliente.email}}
+      </textarea>
+    </div>
+  </div>

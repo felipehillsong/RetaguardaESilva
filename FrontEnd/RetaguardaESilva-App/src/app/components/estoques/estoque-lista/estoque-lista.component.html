@@ -1,0 +1,70 @@
+<div class="form-inline">
+  <app-titulo (validarCrud)="validaCrud($event)" [titulo]=titulo [iconClass]=iconClass [novo]=novo></app-titulo>
+  <br>
+  <div class="card rounded shadow-sm p-3">
+  <div class="input-group mb-2" id="inputPesquisa">
+    <div class="input-group-prepend">
+      <div class="input-group-text">Filtro: </div>
+    </div>
+    <input type="text" class="form-control" placeholder="Pesquisar Produtos" [(ngModel)]="estoqueLista">
+  </div>
+  <table class="table table-striped">
+    <thead class="thead-dark">
+      <tr>
+      <th>Nome do Produto</th>
+      <th>Quantidade</th>
+      <th>Nome do Fornecedor</th>
+      <th>Data de Cadastro</th>
+      <th>Opções</th>
+    </tr>
+  </thead>
+  <tbody *ngIf="estoques && estoques.length">
+    <tr *ngFor="let estoque of estoquesFiltrados">
+      <td>{{estoque.produtoNome}}</td>
+      <td>{{estoque.quantidade}}</td>
+      <td>{{estoque.fornecedorNome}}</td>
+      <td>{{estoque.dataCadastroEstoque | date: "dd/MM/yyyy"}}</td>
+      <td>
+        <button type="button" tooltip="Editar" class="btn btn-primary btn-sm mr-2" *ngIf="visualizarEditar" (click)="editar(estoque.id)">
+          <i class="fa fa-edit"></i></button>&nbsp;
+        <button type="button" tooltip="Visualizar" class="btn btn-secondary btn-sm mr-2" *ngIf="visualizarDetalhe" (click)="detalhe(estoque.id)">
+            <i class="fa-solid fa-file"></i></button>&nbsp;
+        <button type="button" tooltip="Excluir" class="btn btn-danger btn-sm" *ngIf="visualizarExcluir" (click)="openModal($event, template, estoque.produtoNome, estoque.id)">
+            <i class="fa fa-trash"></i></button>&nbsp;
+        <button *ngIf="estoque.enderecoProdutoId" type="button" tooltip="Produto Com Endereço Cadastrado" class="btn btn-warning btn-sm mr-2">
+            <i class="fa-solid fa-circle-exclamation"></i></button>
+        <button type="button" tooltip="Adicionar Endereço" class="btn btn-success btn-sm mr-2" *ngIf="visualizarAdicionarEndereco && !estoque.enderecoProdutoId" (click)="adicionarEndereco(estoque.id)">
+            <i class="fa-solid fa-plus"></i></button>&nbsp;
+        <button type="button" tooltip="Editar Endereço" class="btn btn-outline-primary btn-sm mr-2" *ngIf="visualizarEditarEndereco && estoque.enderecoProdutoId" (click)="editarEndereco(estoque.enderecoProdutoId)">
+            <i class="fa fa-edit"></i></button>&nbsp;
+        <button type="button" tooltip="Detalhes do Endereço" class="btn btn-outline-dark btn-sm mr-2" *ngIf="visualizarDetalheEndereco && estoque.enderecoProdutoId" (click)="detalheEndereco(estoque.enderecoProdutoId)">
+            <i class="fa-solid fa-file"></i></button>&nbsp;
+        <button type="button" tooltip="Excluir Endereço" class="btn btn-outline-danger btn-sm mr-2" *ngIf="visualizarExcluirEndereco && estoque.enderecoProdutoId" (click)="excluirEndereco($event, templateEnderecoProduto, estoque.enderecoProdutoId)">
+            <i class="fa fa-trash"></i></button>
+      </td>
+    </tr>
+  </tbody>
+  <tfoot *ngIf="!estoques.length">
+    <tr>
+      <td colspan="8" class="text-center">
+        <h4>Nenhum Estoque encontrado!</h4>
+      </td>
+    </tr>
+  </tfoot>
+  </table>
+  </div>
+  <ng-template #template>
+    <div class="modal-body text-center">
+      <p>Tem certeza que deseja deletar o produto {{this.produtoNome}}?</p>
+      <button type="button" class="btn btn-default" (click)="confirm()" >Sim</button>
+      <button type="button" class="btn btn-primary" (click)="decline()" >Não</button>
+    </div>
+  </ng-template>
+  <ng-template #templateEnderecoProduto>
+    <div class="modal-body text-center">
+      <p>Tem certeza que deseja deletar o endereco {{this.enderecoNome}}?</p>
+      <button type="button" class="btn btn-default" (click)="confirmEnderecoProduto()" >Sim</button>
+      <button type="button" class="btn btn-primary" (click)="declineEnderecoProduto()" >Não</button>
+    </div>
+  </ng-template>
+

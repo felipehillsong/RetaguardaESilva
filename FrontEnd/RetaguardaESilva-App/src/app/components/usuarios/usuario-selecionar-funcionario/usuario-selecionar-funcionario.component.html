@@ -1,0 +1,45 @@
+<br>
+<button type="button" class="btn btn-primary btn-sm mr-2" tooltip="Voltar" (click)="Voltar()"><i class="fa-solid fa-circle-left"></i></button>
+<br>
+<div class="form-inline">
+  <app-titulo [titulo]=titulo></app-titulo>
+  <br>
+  <div class="card rounded shadow-sm p-3">
+  <div class="input-group mb-2" id="inputPesquisa">
+    <div class="input-group-prepend">
+      <div class="input-group-text">Filtro: </div>
+    </div>
+    <input type="text" class="form-control" placeholder="Pesquisar Funcionarios" [(ngModel)]="funcionarioUsuarioLista">
+  </div>
+<table class="table table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>Nome</th>
+        <th>Opções</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="funcionariosUsuarios && funcionariosUsuarios.length">
+      <tr *ngFor="let funcionarioUsuario of funcionariosUsuariosFiltrados">
+        <td>{{funcionarioUsuario.nome}}</td>
+        <td>
+          <button type="button" tooltip="Incluir" class="btn btn-success btn-sm" (click)="openModal($event, template, funcionarioUsuario.nome, funcionarioUsuario.id)">
+            <i class="fa-sharp fa-solid fa-check"></i></button>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot *ngIf="!funcionariosUsuarios.length">
+      <tr>
+        <td class="text-center" colspan="8">
+          <h4>Nenhum funcionario encontrado!</h4>
+        </td>
+      </tr>
+    </tfoot>
+</table>
+  </div>
+<ng-template #template>
+  <div class="modal-body text-center">
+    <p>Incluir o(a) funcionário {{this.funcionarioUsuarioNome}} como usuário?</p>
+    <button type="button" class="btn btn-default" (click)="confirm(this.funcionarioUsuarioId)" >Sim</button>
+    <button type="button" class="btn btn-primary" (click)="decline()" >Não</button>
+  </div>
+</ng-template>

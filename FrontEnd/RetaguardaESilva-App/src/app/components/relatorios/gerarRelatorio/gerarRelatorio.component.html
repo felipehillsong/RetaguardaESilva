@@ -1,0 +1,378 @@
+<div class="form-inline">
+  <app-titulo [titulo]=titulo [iconClass]=iconClass></app-titulo>
+  <br>
+  <div class="row">
+    <div class="col-md-3">
+      <div class="form-group">
+        <mat-form-field>
+          <mat-label>Selecione o Relatório</mat-label>
+          <mat-select [(ngModel)]="valorRelatorio" [disabled]="dropRelatorio" (ngModelChange)="onDropdownChange($event)">
+            <mat-option>Nenhum</mat-option>
+            <mat-option *ngFor="let relatorio of relatorios" [value]="relatorio">{{relatorio}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div *ngIf="divData" class="col-md-2">
+      <div class="form-group">
+        <label class="required" style="font-weight: bold;">Data Inicio</label>
+        <input type="date" class="form-control" [readonly]="inputData" placeholder="Data Inicio" [(ngModel)]="dataInicio">
+      </div>
+    </div>
+    <div *ngIf="divData" class="col-md-2">
+      <div class="form-group">
+        <label class="required" style="font-weight: bold;">Data Final</label>
+        <input type="date" class="form-control" [readonly]="inputData" placeholder="Data Final" [(ngModel)]="dataFinal">
+      </div>
+    </div>
+    <div *ngIf="botaoGerar" class="col-md-2">
+      <div class="form-group">
+        <br>
+        <button class="btn btn-sm btn-secondary btn-block" (click)="Gerar()" type="submit">Gerar</button>
+      </div>
+    </div>
+    <div *ngIf="botaoResetar" class="col-md-1">
+      <div class="form-group">
+        <br>
+        <button class="btn btn-sm btn-warning btn-block" (click)="Resetar()" type="submit">Resetar</button>
+      </div>
+    </div>
+    <div *ngIf="botaoGerarExcel" class="col-md-2">
+      <div class="form-group">
+        <br>
+        <button class="btn btn-sm btn-success btn-block" (click)="GerarExcel()" type="submit">Gerar Excel</button>
+      </div>
+    </div>
+</div>
+<div *ngIf="todosClientes">
+  <table id="excel-clientes" class="table table-striped">
+    <thead class="thead-dark">
+      <tr>
+      <th>Nome</th>
+      <th>Telefone</th>
+      <th>Email</th>
+      <th>Data de Cadastro</th>
+    </tr>
+  </thead>
+  <tbody *ngIf="clientes && clientes.length">
+    <tr *ngFor="let cliente of clientes">
+      <td>{{cliente.nome}}</td>
+      <td>{{cliente.telefone}}</td>
+      <td>{{cliente.email}}</td>
+      <td>{{cliente.dataCadastroCliente | date: "dd/MM/yyyy"}}</td>
+    </tr>
+  </tbody>
+  </table>
+</div>
+<div *ngIf="todosFornecedores">
+  <table id="excel-fornecedores" class="table table-striped">
+    <thead class="thead-dark">
+      <tr>
+      <th>Nome</th>
+      <th>Telefone</th>
+      <th>Email</th>
+      <th>Data de Cadastro</th>
+      <th>CNPJ</th>
+    </tr>
+  </thead>
+  <tbody *ngIf="fornecedores && fornecedores.length">
+    <tr *ngFor="let fornecedor of fornecedores">
+      <td>{{fornecedor.nome}}</td>
+      <td>{{fornecedor.telefone}}</td>
+      <td>{{fornecedor.email}}</td>
+      <td>{{fornecedor.dataCadastroFornecedor | date: "dd/MM/yyyy"}}</td>
+      <td>{{fornecedor.cnpj}}</td>
+    </tr>
+  </tbody>
+  </table>
+</div>
+<div *ngIf="todosFornecedoresProdutos">
+  <table id="excel-fornecedoresProdutos" class="table table-striped">
+    <thead class="thead-dark">
+      <tr>
+      <th>Nome</th>
+      <th>Data de Cadastro do Cliente</th>
+      <th>Produto</th>
+      <th>Data de Cadastro do Produto</th>
+    </tr>
+  </thead>
+  <tbody *ngIf="fornecedores && fornecedores.length">
+    <ng-container *ngFor="let fornecedor of fornecedores">
+      <tr>
+        <td [attr.rowspan]="fornecedor.produtos.length + 1">{{ fornecedor.nome }}</td>
+        <td [attr.rowspan]="fornecedor.produtos.length + 1">{{ fornecedor.dataCadastroFornecedor | date: 'dd/MM/yyyy' }}</td>
+      </tr>
+      <tr *ngFor="let produto of fornecedor.produtos">
+        <td>{{ produto.nome }}</td>
+        <td>{{ produto.dataCadastroProduto | date: 'dd/MM/yyyy' }}</td>
+      </tr>
+    </ng-container>
+  </tbody>
+  </table>
+</div>
+<div *ngIf="todosFuncionarios">
+  <table id="excel-funcionarios" class="table table-striped">
+    <thead class="thead-dark">
+      <tr>
+      <th>Nome</th>
+      <th>Telefone</th>
+      <th>Email</th>
+      <th>Data de Cadastro</th>
+      <th>CPF</th>
+    </tr>
+  </thead>
+  <tbody *ngIf="funcionarios && funcionarios.length">
+    <tr *ngFor="let funcionario of funcionarios">
+      <td>{{funcionario.nome}}</td>
+      <td>{{funcionario.telefone}}</td>
+      <td>{{funcionario.email}}</td>
+      <td>{{funcionario.dataCadastroFuncionario | date: "dd/MM/yyyy"}}</td>
+      <td>{{funcionario.cpf}}</td>
+    </tr>
+  </tbody>
+  </table>
+</div>
+<div *ngIf="todosTransportadores">
+  <table id="excel-transportadores" class="table table-striped">
+    <thead class="thead-dark">
+      <tr>
+      <th>Nome</th>
+      <th>Telefone</th>
+      <th>Email</th>
+      <th>Data de Cadastro</th>
+      <th>CNPJ</th>
+    </tr>
+  </thead>
+  <tbody *ngIf="transportadores && transportadores.length">
+    <tr *ngFor="let transportador of transportadores">
+      <td>{{transportador.nome}}</td>
+      <td>{{transportador.telefone}}</td>
+      <td>{{transportador.email}}</td>
+      <td>{{transportador.dataCadastroTransportador | date: "dd/MM/yyyy"}}</td>
+      <td>{{transportador.cnpj}}</td>
+    </tr>
+  </tbody>
+  </table>
+</div>
+<div *ngIf="todosUsuarios">
+  <table id="excel-usuarios" class="table table-striped">
+    <thead class="thead-dark">
+      <tr>
+      <th>Nome</th>
+      <th>Data de Cadastro</th>
+      <th>Visualizar Cliente</th>
+      <th>Cadastro de Cliente</th>
+      <th>Editar Cliente</th>
+      <th>Detalhes do Cliente</th>
+      <th>Excluir Cliente</th>
+      <th>Visualizar Empresa</th>
+      <th>Cadastro de Empresa</th>
+      <th>Editar Empresa</th>
+      <th>Detalhes da Empresa</th>
+      <th>Excluir Empresa</th>
+      <th>Visualizar Estoque</th>
+      <th>Editar Estoque</th>
+      <th>Detalhes do Estoque</th>
+      <th>Excluir Estoque</th>
+      <th>Visualizar Endereço Estoque</th>
+      <th>Cadastro de Endereço de Estoque</th>
+      <th>Editar Endereço de Estoque</th>
+      <th>Detalhes do Endereço de Estoque</th>
+      <th>Excluir Endereço de Estoque</th>
+      <th>Visualizar Fornecedor</th>
+      <th>Cadastro de Fornecedor</th>
+      <th>Editar Fornecedor</th>
+      <th>Detalhes do Fornecedor</th>
+      <th>Excluir Fornecedor</th>
+      <th>Visualizar Funcionario</th>
+      <th>Cadastro de Funcionario</th>
+      <th>Editar Funcionario</th>
+      <th>Detalhes do Funcionario</th>
+      <th>Excluir Funcionario</th>
+      <th>Visualizar Produto</th>
+      <th>Cadastro de Produto</th>
+      <th>Editar Produto</th>
+      <th>Detalhes do Produto</th>
+      <th>Excluir Produto</th>
+      <th>Visualizar Transportador</th>
+      <th>Cadastro de Transportador</th>
+      <th>Editar Transportador</th>
+      <th>Detalhes do Transportador</th>
+      <th>Excluir Transportador</th>
+      <th>Visualizar Usuario</th>
+      <th>Cadastro de Usuario</th>
+      <th>Editar Usuario</th>
+      <th>Detalhes do Usuario</th>
+      <th>Excluir Usuario</th>
+      <th>Visualizar Pedido</th>
+      <th>Cadastro de Pedido</th>
+      <th>Editar Pedido</th>
+      <th>Detalhes do Pedido</th>
+      <th>Excluir Pedido</th>
+      <th>Visualizar Nota Fiscal</th>
+      <th>Cadastro de Nota Fiscal</th>
+      <th>Nota Fiscal Gerar PDF</th>
+      <th>Cancelar Nota Fiscal</th>
+      <th>Relatorio</th>
+    </tr>
+  </thead>
+  <tbody *ngIf="usuarios && usuarios.length">
+    <ng-container *ngFor="let usuario of usuarios">
+      <tr>
+        <td [attr.rowspan]="usuario.permissoes.length + 1">{{ usuario.nome }}</td>
+        <td [attr.rowspan]="usuario.permissoes.length + 1">{{ usuario.dataCadastroUsuario | date: 'dd/MM/yyyy' }}</td>
+      </tr>
+      <tr *ngFor="let permissoes of usuario.permissoes">
+        <td>{{ permissoes.visualizarCliente }}</td>
+        <td>{{ permissoes.clienteCadastro }}</td>
+        <td>{{ permissoes.clienteEditar }}</td>
+        <td>{{ permissoes.clienteDetalhe }}</td>
+        <td>{{ permissoes.clienteExcluir }}</td>
+        <td>{{ permissoes.visualizarEmpresa }}</td>
+        <td>{{ permissoes.empresaCadastro }}</td>
+        <td>{{ permissoes.empresaEditar }}</td>
+        <td>{{ permissoes.empresaDetalhe }}</td>
+        <td>{{ permissoes.empresaExcluir }}</td>
+        <td>{{ permissoes.visualizarEstoque }}</td>
+        <td>{{ permissoes.estoqueEditar }}</td>
+        <td>{{ permissoes.estoqueDetalhe }}</td>
+        <td>{{ permissoes.estoqueExcluir }}</td>
+        <td>{{ permissoes.visualizarEnderecoProduto }}</td>
+        <td>{{ permissoes.enderecoProdutoCadastro }}</td>
+        <td>{{ permissoes.enderecoProdutoEditar }}</td>
+        <td>{{ permissoes.enderecoProdutoDetalhe }}</td>
+        <td>{{ permissoes.enderecoProdutoExcluir }}</td>
+        <td>{{ permissoes.visualizarFornecedor }}</td>
+        <td>{{ permissoes.fornecedorCadastro }}</td>
+        <td>{{ permissoes.fornecedorEditar }}</td>
+        <td>{{ permissoes.fornecedorDetalhe }}</td>
+        <td>{{ permissoes.fornecedorExcluir }}</td>
+        <td>{{ permissoes.visualizarFuncionario }}</td>
+        <td>{{ permissoes.funcionarioCadastro }}</td>
+        <td>{{ permissoes.funcionarioEditar }}</td>
+        <td>{{ permissoes.funcionarioDetalhe }}</td>
+        <td>{{ permissoes.funcionarioExcluir }}</td>
+        <td>{{ permissoes.visualizarProduto }}</td>
+        <td>{{ permissoes.produtoCadastro }}</td>
+        <td>{{ permissoes.produtoEditar }}</td>
+        <td>{{ permissoes.produtoDetalhe }}</td>
+        <td>{{ permissoes.produtoExcluir }}</td>
+        <td>{{ permissoes.visualizarTransportador }}</td>
+        <td>{{ permissoes.transportadorCadastro }}</td>
+        <td>{{ permissoes.transportadorEditar }}</td>
+        <td>{{ permissoes.transportadorDetalhe }}</td>
+        <td>{{ permissoes.transportadorExcluir }}</td>
+        <td>{{ permissoes.visualizarUsuario }}</td>
+        <td>{{ permissoes.usuarioCadastro }}</td>
+        <td>{{ permissoes.usuarioEditar }}</td>
+        <td>{{ permissoes.usuarioPermissoes }}</td>
+        <td>{{ permissoes.usuarioExcluir }}</td>
+        <td>{{ permissoes.visualizarPedido }}</td>
+        <td>{{ permissoes.pedidoCadastro }}</td>
+        <td>{{ permissoes.pedidoEditar }}</td>
+        <td>{{ permissoes.pedidoDetalhe }}</td>
+        <td>{{ permissoes.pedidoExcluir }}</td>
+        <td>{{ permissoes.visualizarNotaFiscal }}</td>
+        <td>{{ permissoes.notaFiscalCadastro }}</td>
+        <td>{{ permissoes.notaFiscalGerarPDF }}</td>
+        <td>{{ permissoes.notaFiscalCancelar }}</td>
+        <td>{{ permissoes.gerarRelatorio }}</td>
+      </tr>
+    </ng-container>
+  </tbody>
+  </table>
+</div>
+<div *ngIf="todosEmpresas">
+  <table id="excel-empresas" class="table table-striped">
+    <thead class="thead-dark">
+      <tr>
+      <th>Nome</th>
+      <th>Telefone</th>
+      <th>Email</th>
+      <th>Data de Cadastro</th>
+      <th>CNPJ</th>
+    </tr>
+  </thead>
+  <tbody *ngIf="empresas && empresas.length">
+    <tr *ngFor="let empresa of empresas">
+      <td>{{empresa.nome}}</td>
+      <td>{{empresa.telefone}}</td>
+      <td>{{empresa.email}}</td>
+      <td>{{empresa.dataCadastroEmpresa | date: "dd/MM/yyyy"}}</td>
+      <td>{{empresa.cnpj}}</td>
+    </tr>
+  </tbody>
+  </table>
+</div>
+<div *ngIf="todosProdutos">
+  <table id="excel-produtos" class="table table-striped">
+    <thead class="thead-dark">
+      <tr>
+      <th>Codigo</th>
+      <th>Nome</th>
+      <th>Quantidade</th>
+      <th>Preço de Compra</th>
+      <th>Preço de Venda</th>
+      <th>Data de Cadastro</th>
+    </tr>
+  </thead>
+  <tbody *ngIf="produtos && produtos.length">
+    <tr *ngFor="let produto of produtos">
+      <td>{{produto.codigo}}</td>
+      <td>{{produto.nome}}</td>
+      <td>{{produto.quantidade}}</td>
+      <td>{{produto.precoCompra | currency: 'BRL' }}</td>
+      <td>{{produto.precoVenda | currency: 'BRL' }}</td>
+      <td>{{produto.dataCadastroProduto | date: "dd/MM/yyyy"}}</td>
+    </tr>
+  </tbody>
+  </table>
+</div>
+<div *ngIf="todosEstoques">
+  <table id="excel-estoques" class="table table-striped">
+    <thead class="thead-dark">
+      <tr>
+      <th>Nome do Produto</th>
+      <th>Quantidade</th>
+      <th>Data de Cadastro</th>
+    </tr>
+  </thead>
+  <tbody *ngIf="estoques && estoques.length">
+    <tr *ngFor="let estoque of estoques">
+      <td>{{estoque.produtoNome}}</td>
+      <td>{{estoque.quantidade}}</td>
+      <td>{{estoque.dataCadastroEstoque | date: "dd/MM/yyyy"}}</td>
+    </tr>
+  </tbody>
+  </table>
+</div>
+<div *ngIf="todosPedidos">
+  <table id="excel-pedidos" class="table table-striped">
+    <thead class="thead-dark">
+      <tr>
+      <th>Numero do Pedido</th>
+      <th>Cliente</th>
+      <th>Nome do Transportador</th>
+      <th>Preço Total</th>
+      <th>Status Pedido</th>
+      <th>Data de Cadastro do Pedido</th>
+      <th>Produtos</th>
+    </tr>
+  </thead>
+  <tbody *ngIf="pedidos && pedidos.length">
+    <ng-container *ngFor="let pedido of pedidos">
+      <tr>
+        <td [attr.rowspan]="pedido.produtos.length + 1">{{ pedido.id }}</td>
+        <td [attr.rowspan]="pedido.produtos.length + 1">{{ pedido.clienteNome }}</td>
+        <td [attr.rowspan]="pedido.produtos.length + 1">{{ pedido.transportadorNome }}</td>
+        <td [attr.rowspan]="pedido.produtos.length + 1">{{ pedido.precoTotal }}</td>
+        <td [attr.rowspan]="pedido.produtos.length + 1">{{ pedido.statusPedido }}</td>
+        <td [attr.rowspan]="pedido.produtos.length + 1">{{ pedido.dataCadastroPedido | date: 'dd/MM/yyyy' }}</td>
+      </tr>
+      <tr *ngFor="let produto of pedido.produtos">
+        <td>{{ produto.nome }}</td>
+      </tr>
+    </ng-container>
+  </tbody>
+  </table>
+</div>

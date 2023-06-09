@@ -1,0 +1,143 @@
+<br>
+<button type="button" class="btn btn-primary btn-sm mr-2" tooltip="Voltar" (click)="Voltar()"><i class="fa-solid fa-circle-left"></i></button>
+<br>
+<app-titulo [titulo]=titulo></app-titulo>
+<br>
+<div class="form-row">
+    <div class="card rounded shadow-sm">
+      <form [formGroup]="form">
+        <div class="p-3">
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label class="required" style="font-weight: bold;">Nome</label>
+              <input type="text" class="form-control" [ngClass]="cssValidator(f.nome)" formControlName="nome" placeholder="Nome" [(ngModel)]="fornecedor.nome">
+              <div *ngIf="f.nome.errors?.required && f.nome.touched" class="invalid-feedback">
+                Nome é obrigatório.
+              </div>
+              <div *ngIf="f.nome.errors?.minlength" class="invalid-feedback">
+                Nome deve ter no mínimo 3 caracteres.
+              </div>
+              <div *ngIf="f.nome.errors?.maxlength" class="invalid-feedback">
+                Nome deve ter no máximo 50 caracteres.
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-sm-6">
+              <label class="required" style="font-weight: bold;">Endereço</label>
+              <input type="text" class="form-control" [ngClass]="cssValidator(f.endereco)" formControlName="endereco" placeholder="Endereço" [(ngModel)]="fornecedor.endereco">
+              <div *ngIf="f.endereco.errors?.required && f.endereco.touched" class="invalid-feedback">
+                Endereço é obrigatório.
+              </div>
+            </div>
+            <div class="form-group col-sm-6">
+              <label class="required" style="font-weight: bold;">Bairro</label>
+              <input type="text" class="form-control" [ngClass]="cssValidator(f.bairro)" formControlName="bairro" placeholder="Bairro" [(ngModel)]="fornecedor.bairro">
+              <div *ngIf="f.bairro.errors?.required && f.bairro.touched" class="invalid-feedback">
+                Bairro é obrigatório.
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-sm-6">
+              <label class="required" style="font-weight: bold;">Municipio</label>
+              <input type="text" class="form-control" [ngClass]="cssValidator(f.municipio)" formControlName="municipio" placeholder="Municipio" [(ngModel)]="fornecedor.municipio">
+                <div *ngIf="f.municipio.errors?.required && f.municipio.touched" class="invalid-feedback">
+                  Municipio é obrigatório.
+                </div>
+              </div>
+            <div class="form-group col-sm-6">
+              <label style="font-weight: bold;">Complemento</label>
+              <input type="text" class="form-control" formControlName="complemento" placeholder="Complemento" [(ngModel)]="fornecedor.complemento">
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-sm-2">
+              <label class="required" style="font-weight: bold;">Numero</label>
+              <input type="text" class="form-control" (keypress)="somenteNumeros($event)" [ngClass]="cssValidator(f.numero)" formControlName="numero" placeholder="Numero" [(ngModel)]="fornecedor.numero">
+              <div *ngIf="f.numero.errors?.required && f.numero.touched" class="invalid-feedback">
+                Numero é obrigatório.
+              </div>
+            </div>
+            <div class="form-group col-sm-2">
+              <label class="required" style="font-weight: bold;">CEP</label>
+              <input type="text" class="form-control" mask="00.000-000" [ngClass]="cssValidator(f.cep)" formControlName="cep" placeholder="CEP" [(ngModel)]="fornecedor.cep" (keyup.enter)="EnviarCep(fornecedor.cep)">
+              <div *ngIf="f.cep.errors?.required && f.cep.touched" class="invalid-feedback">
+                CEP é obrigatório.
+              </div>
+            </div>
+            <div class="form-group col-sm-4">
+              <label class="required" style="font-weight: bold;">UF</label>
+              <input type="text" class="form-control" maxlength="2" mask="SS" [ngClass]="cssValidator(f.uf)" formControlName="uf" placeholder="UF" [(ngModel)]="fornecedor.uf">
+              <div *ngIf="f.uf.errors?.required && f.uf.touched" class="invalid-feedback">
+                UF é obrigatório.
+              </div>
+            </div>
+            <div class="form-group col-sm-4">
+              <label style="font-weight: bold;">País</label>
+              <input type="text" class="form-control" readonly formControlName="pais" placeholder="País" [(ngModel)]="fornecedor.pais">
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-sm-2">
+              <label class="required" style="font-weight: bold;">Telefone</label>
+              <input type="text" class="form-control" [mask]="getTelefoneMask()" [ngClass]="cssValidator(f.telefone)" formControlName="telefone" placeholder="Telefone" [(ngModel)]="fornecedor.telefone">
+              <div *ngIf="f.telefone.errors?.required && f.telefone.touched" class="invalid-feedback">
+                Telefone é obrigatório.
+              </div>
+            </div>
+            <div class="form-group col-sm-6">
+              <label class="required" style="font-weight: bold;">Email</label>
+              <input type="email" class="form-control" [ngClass]="cssValidator(f.email)" formControlName="email" placeholder="Email" [(ngModel)]="fornecedor.email">
+              <div *ngIf="f.email.errors?.required && f.email.touched" class="invalid-feedback">
+                Email é obrigatório.
+              </div>
+            </div>
+            <div class="form-group col-sm-4">
+              <label class="required" style="font-weight: bold;">CNPJ</label>
+              <input type="text" class="form-control" mask="00.000.000/0000-00" [ngClass]="cssValidator(f.cnpj)" formControlName="cnpj" placeholder="CNPJ" [(ngModel)]="fornecedor.cnpj">
+              <div *ngIf="f.cnpj.errors?.required && f.cnpj.touched" class="invalid-feedback">
+                CNPJ é obrigatório.
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-sm-4">
+              <label class="required" style="font-weight: bold;">Inscrição Municipal</label>
+              <input type="text" class="form-control" [ngClass]="cssValidator(f.inscricaoMunicipal)" mask="000.000.000/0000" formControlName="inscricaoMunicipal" placeholder="Inscrição Municipal" [(ngModel)]="fornecedor.inscricaoMunicipal">
+              <div *ngIf="f.inscricaoMunicipal.errors?.required && f.inscricaoMunicipal.touched" class="invalid-feedback">
+                Inscrição Municipal é obrigatória.
+              </div>
+            </div>
+            <div class="form-group col-sm-4">
+              <label class="required" style="font-weight: bold;">Inscrição Estadual</label>
+              <input type="text" class="form-control" [ngClass]="cssValidator(f.inscricaoEstadual)" mask="000.000.000/0000" formControlName="inscricaoEstadual" placeholder="Inscrição Estadual" [(ngModel)]="fornecedor.inscricaoEstadual">
+              <div *ngIf="f.inscricaoEstadual.errors?.required && f.inscricaoEstadual.touched" class="invalid-feedback">
+                Inscrição Estadual é obrigatória.
+              </div>
+            </div>
+            <div class="form-group col-sm-2">
+              <label class="required" style="font-weight: bold;">Data de Cadastro</label>
+              <input type="date" class="form-control" [ngClass]="cssValidator(f.dataCadastroFornecedor)" formControlName="dataCadastroFornecedor" placeholder="Data de Cadastro" [(ngModel)]="fornecedor.dataCadastroFornecedor">
+              <div *ngIf="f.dataCadastroFornecedor.errors?.required && f.dataCadastroFornecedor.touched" class="invalid-feedback">
+                Data de cadastro é obrigatório.
+              </div>
+            </div>
+            <div class="form-group col-sm-2">
+              <label style="font-weight: bold;">Ativo</label>
+                <mat-select class="form-control" [(value)]="ativo" formControlName="ativo">
+                  <mat-option value="Ativo">Ativo</mat-option>
+                  <mat-option value="Inativo">Inativo</mat-option>
+                </mat-select>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div id="botaoEditar">
+            <button class="btn btn-lg btn-primary btn-block" [disabled]="!form.valid" (click)="Editar()" type="submit">Editar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+</div>
+<label class="required">Campos Obrigatórios</label>

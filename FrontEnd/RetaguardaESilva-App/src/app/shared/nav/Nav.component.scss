@@ -1,0 +1,11 @@
+i {
+  font-size: 30px;
+  margin-top: 5px;
+}
+.required:before {
+  content:" *";
+  color: red;
+}
+#menuAlterarSenha{
+  float: left;
+}

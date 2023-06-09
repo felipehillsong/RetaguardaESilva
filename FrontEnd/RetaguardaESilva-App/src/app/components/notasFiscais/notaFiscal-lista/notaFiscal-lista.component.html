@@ -1,0 +1,58 @@
+<div class="form-inline">
+  <app-titulo (validarCrud)="validaCrud($event)" [titulo]=titulo [iconClass]=iconClass></app-titulo>
+  <br>
+  <div class="card rounded shadow-sm p-3">
+  <div class="input-group mb-2" id="inputPesquisa">
+    <div class="input-group-prepend">
+      <div class="input-group-text">Filtro: </div>
+    </div>
+    <input type="text" class="form-control" placeholder="Pesquisar nome do cliente ou numero da nota fiscal" [(ngModel)]="notaFiscalLista">
+  </div>
+<table class="table table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>Numero da Nota</th>
+        <th>Numero do Pedido</th>
+        <th>Nome do Cliente</th>
+        <th>Quantidade de Itens</th>
+        <th>Preço total</th>
+        <th>Data de Cadastro</th>
+        <th>Status da Nota</th>
+        <th>Opções</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="notasFiscais && notasFiscais.length">
+      <tr *ngFor="let notaFiscal of notasFiscaisFiltradas">
+        <td>{{notaFiscal.id}}</td>
+        <td>{{notaFiscal.pedidoId}}</td>
+        <td>{{notaFiscal.nomeCliente}}</td>
+        <td>{{notaFiscal.quantidadeItens}}</td>
+        <td>{{notaFiscal.precoTotal | currency: 'BRL' }}</td>
+        <td>{{notaFiscal.dataCadastroNotaFiscal | date: "dd/MM/yyyy"}}</td>
+        <td>{{notaFiscal.statusNota}}</td>
+        <td>
+          <button type="button" tooltip="Gerar PDF" *ngIf="visualizarGerarPDF" (click)="gerarPDF(notaFiscal.id)" class="btn btn-success btn-sm mr-2">
+            <i class="fa-solid fa-file-pdf"></i></button>&nbsp;
+            <button *ngIf="notaFiscal.status == notaFiscalCancelada" type="button" tooltip="Nota Fiscal Cancelada" class="btn btn-warning btn-sm">
+              <i class="fa-sharp fa-solid fa-circle-xmark"></i></button>
+          <button type="button" tooltip="Cancelar NF" class="btn btn-danger btn-sm" *ngIf="visualizarCancelar && notaFiscal.status == notaFiscalAprovada" (click)="openModal($event, template, notaFiscal.nomeCliente, notaFiscal.id)">
+            <i class="fa fa-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot *ngIf="!notasFiscais.length">
+      <tr>
+        <td class="text-center" colspan="8">
+          <h4>Nenhuma nota fiscal encontrada!</h4>
+        </td>
+      </tr>
+    </tfoot>
+</table>
+  </div>
+<ng-template #template>
+  <div class="modal-body text-center">
+    <p>Tem certeza que deseja cancelar a nota {{this.notaFiscalId}} do cliente {{this.clienteNome}}?</p>
+    <button type="button" class="btn btn-default" (click)="confirm()" >Sim</button>
+    <button type="button" class="btn btn-primary" (click)="decline()" >Não</button>
+  </div>
+</ng-template>

@@ -1,0 +1,8 @@
+#botaoEditar{
+  display: flex;
+  justify-content: center;
+}
+.required:before {
+  content:" *";
+  color: red;
+}

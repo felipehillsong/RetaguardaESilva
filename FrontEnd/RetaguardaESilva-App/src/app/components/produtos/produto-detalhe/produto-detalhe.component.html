@@ -1,0 +1,50 @@
+<br>
+<button type="button" class="btn btn-primary btn-sm mr-2" tooltip="Voltar" (click)="Voltar()"><i class="fa-solid fa-circle-left"></i></button>
+<br>
+<app-titulo [titulo]=titulo></app-titulo>
+<br>
+<div class="form-row">
+    <div class="card rounded shadow-sm">
+        <div class="p-3">
+          <div class="row">
+            <div class="form-group col-md-10">
+              <label style="font-weight: bold;">Nome</label>
+              <input type="text" class="form-control" readonly [(ngModel)]="produto.nome">
+            </div>
+            <div class="form-group col-md-2">
+              <label style="font-weight: bold;">Fornecedor</label>
+              <input type="text" class="form-control" readonly value="{{nomeFornecedor}}">
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-sm-2">
+              <label style="font-weight: bold;">Quantidade</label>
+              <input type="text" class="form-control" readonly [(ngModel)]="produto.quantidade">
+            </div>
+            <div class="form-group col-sm-2">
+              <label style="font-weight: bold;">Preço de Compra</label>
+              <input type="text" class="form-control" readonly [(ngModel)]="produto.precoCompraFormatado">
+            </div>
+            <div class="form-group col-sm-2">
+              <label style="font-weight: bold;">Preço de Venda</label>
+              <input type="text" class="form-control" readonly [(ngModel)]="produto.precoVendaFormatado">
+            </div>
+            <div class="form-group col-sm-2">
+              <label style="font-weight: bold;">Código</label>
+              <input type="text" class="form-control" readonly [(ngModel)]="produto.codigo">
+              </div>
+              <div class="form-group col-sm-2">
+                <label style="font-weight: bold;">Data de Cadastro</label>
+                <input type="date" class="form-control" readonly [(ngModel)]="produto.dataCadastroProduto">
+              </div>
+              <div class="form-group col-sm-2">
+                <label style="font-weight: bold;">Ativo</label>
+                <mat-select class="form-control" readonly disabled [(value)]="ativo">
+                  <mat-option value="Ativo">Ativo</mat-option>
+                  <mat-option value="Inativo">Inativo</mat-option>
+                </mat-select>
+              </div>
+          </div>
+        </div>
+    </div>
+</div>

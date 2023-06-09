@@ -1,0 +1,22 @@
+<div class="d-flex p-3 my-3 text-white bg-dark rounded shadow-sm" *ngIf="titu.visible || nav">
+  <div class="d-flex align-items-center mr-auto">
+    <i class="{{iconClass}} mr-3"></i>
+    <div class="lh-100">
+      <h2 class="mb-0">&nbsp;&nbsp;{{titulo}}</h2>
+    </div>
+  </div>
+  <div class="p-3" id="novo" *ngIf="visualizarCadastros">
+    <a class="d-flex btn btn-outline-light" routerLink="{{novo}}">
+      <i class="fa fa-plus-circle my-1" id="novoFont"></i>
+      <b class="ml-1 d-none d-sm-block">Novo</b>
+    </a>
+  </div>
+  <div class="p-3" id="novo" *ngIf="visualizarEnderecoProduto">
+    <a class="d-flex btn btn-outline-light" routerLink="{{novo}}">
+      <i class="fa-solid fa-magnifying-glass" id="novoFontEnderecoProduto"></i>
+      <b class="ml-1 d-none d-sm-block">Lista de Endereços dos Produtos</b>
+    </a>
+  </div>
+</div>
+
+<h2 id="titulo" *ngIf="titu.visibleTitulos">{{titulo}}</h2>

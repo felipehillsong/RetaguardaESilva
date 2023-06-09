@@ -1,0 +1,138 @@
+<br>
+<button type="button" class="btn btn-primary btn-sm mr-2" tooltip="Voltar" (click)="Voltar()"><i class="fa-solid fa-circle-left"></i></button>
+<br>
+<app-titulo [titulo]=titulo></app-titulo>
+<br>
+<div class="form-row">
+    <div class="card rounded shadow-sm">
+      <form [formGroup]="formCliente">
+        <div class="p-3">
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label class="required" style="font-weight: bold;">Cliente</label>
+              <input type="text" placeholder="Pesquisar Cliente" [readonly]="inputCliente" [ngClass]="cssValidatorCliente(f.clienteNome)" formControlName="clienteNome" [matAutocomplete]="autoCliente" [(ngModel)]="gerarPedido.clienteNome" class="form-control">
+              <div *ngIf="f.clienteNome.errors?.required && f.clienteNome.touched" class="invalid-feedback">
+                Selecionar o cliente é obrigatório.
+                </div>
+              <mat-autocomplete #autoCliente="matAutocomplete" (optionSelected)="onOptionSelectedCliente($event)">
+                <mat-option *ngFor="let cliente of filteredClientes | async" [value]="cliente.nome" [attr.data-id]="cliente.id" (click)="pegarClienteId(cliente.id)">
+                  {{cliente.nome}}
+                </mat-option>
+              </mat-autocomplete>
+            </div>
+            <div class="form-group col-md-6">
+              <label class="required" style="font-weight: bold;">Transportador</label>
+              <input type="text" placeholder="Pesquisar Transportador" [readonly]="inputTransportador" [ngClass]="cssValidatorCliente(f.transportadorNome)" formControlName="transportadorNome" [matAutocomplete]="autoTransportador" [(ngModel)]="gerarPedido.transportadorNome" class="form-control">
+              <div *ngIf="f.transportadorNome.errors?.required && f.transportadorNome.touched" class="invalid-feedback">
+                Selecionar a transportadora é obrigatório.
+                </div>
+              <mat-autocomplete #autoTransportador="matAutocomplete" (optionSelected)="onOptionSelectedTransportador($event)">
+                <mat-option *ngFor="let transportador of filteredTransportadores | async" [value]="transportador.nome" [attr.data-id]="transportador.id" (click)="pegarTransportadorId(transportador.id)">
+                  {{transportador.nome}}
+                </mat-option>
+              </mat-autocomplete>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div id="botaoCadastrar">
+              <button class="btn btn-lg btn-success" [disabled]="!formCliente.valid" (click)="SelecionarCliente()" type="submit">Selecionar Produtos</button>
+            </div>
+          </div>
+        </div>
+        </form>
+      </div>
+  </div>
+            <br>
+            <br>
+            <br>
+            <form [formGroup]="formProduto">
+            <div class="container-fluid" *ngIf="mostrarProduto">
+              <div class="row justify-content-center align-items-center">
+                <div class="col-lg-6 col-md-8 col-sm-10">
+                  <div class="row">
+                    <div class="col-8">
+                      <label class="required" style="font-weight: bold;">Produtos</label>
+                      <div class="input-group">
+                        <input type="text" placeholder="Pesquisar Produto" [ngClass]="cssValidatorProduto(p.nome)" formControlName="nome" [matAutocomplete]="autoProduto" [(ngModel)]="produto.nome" class="form-control">
+                        <div *ngIf="p.nome.errors?.required && p.nome.touched" class="invalid-feedback">
+                          Selecionar o produto é obrigatório.
+                          </div>
+                        <mat-autocomplete #autoProduto="matAutocomplete" (optionSelected)="onOptionSelectedProduto($event)">
+                          <mat-option *ngFor="let produto of filteredProdutos | async" [value]="produto.nome" [attr.data-id]="produto.id" (click)="pegarProdutoId(produto.id)">
+                            {{produto.nome}}
+                          </mat-option>
+                        </mat-autocomplete>
+                      </div>
+                    </div>
+                    <div class="col-4 d-flex align-items-end justify-content-center">
+                      <button class="btn btn-secondary" *ngIf="selecionarProduto" [disabled]="!formProduto.valid" (click)="SelecionarProduto()" type="submit">Selecionar</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+            <br>
+            <br>
+            <br>
+            <form [formGroup]="formQuantidade">
+            <div *ngIf="mostrarGrid">
+              <table class="table table-striped">
+                <thead class="thead-dark">
+                  <tr>
+                  <th scope="col" class="col-2">Codigo</th>
+                  <th scope="col" class="col-3">Nome do Produto</th>
+                  <th scope="col" class="col-2">Preço de Venda</th>
+                  <th scope="col" class="col-1">Quantidade do Estoque</th>
+                  <th scope="col" class="col-4">Quantidade de Venda</th>
+                  <th scope="col" class="col-1">Opções</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="produtosGrid && produtosGrid.length">
+                <tr *ngFor="let produtoPedido of produtosGrid">
+                  <td class="col-2">{{produtoPedido.codigo}}</td>
+                  <td class="col-2">{{produtoPedido.nome}}</td>
+                  <td class="col-2">{{produtoPedido.precoVenda | currency: 'BRL'}}</td>
+                  <td *ngIf="produtoPedido.quantidade < limiteDeProduto" class="col-2 text-danger">{{produtoPedido.quantidade}}</td>
+                  <td *ngIf="produtoPedido.quantidade > 10" class="col-2">{{produtoPedido.quantidade}}</td>
+                  <td class="col-1" *ngIf="produtoPedido.quantidadeProdutoGrid">{{produtoPedido.quantidadeVenda}}</td>
+                  <td class="col-1" *ngIf="produtoPedido.inputProduto"><input type="text" ng-pattern="/^(?!0)\d+$/" placeholder="Quantidade de Compra" [ngClass]="cssValidatorQuantidade(pe.quantidadeVenda)" (keypress)="somenteNumeros($event)" formControlName="quantidadeVenda" [(ngModel)]="produtoPedido.quantidadeVenda" class="form-control form-control-sm">
+                    <div *ngIf="pe.quantidadeVenda.errors?.required && pe.quantidadeVenda.touched" class="invalid-feedback">
+                    Quantidade é obrigatória.
+                    </div></td>
+                  <td class="col-1" *ngIf="produtoPedido.inputProduto">
+                    <button type="button" tooltip="Confirmar Quantidade" class="btn btn-success btn-sm" [disabled]="!formQuantidade.valid" (click)="EnviarQuantidade(produtoPedido.id)">
+                      <i class="fa-sharp fa-solid fa-check"></i></button>
+                  </td>
+                  <td class="col-2" *ngIf="produtoPedido.botaoQuantidadeConfirmada && produtoPedido.quantidadeVenda">
+                    <button class="btn btn-warning btn-sm" tooltip="Quantidade Confirmada">
+                      <i class="fa-sharp fa-solid fa-circle-xmark"></i></button>
+                  </td>
+                  <td class="col-2" *ngIf="produtoPedido.botaoEditarQuantidade && produtoPedido.quantidadeVenda">
+                    <button type="button" tooltip="Editar Quantidade" class="btn btn-info btn-sm" (click)="EditarQuantidade(produtoPedido.id)">
+                      <i class="fa-sharp fa-solid fa-pen"></i></button>
+                  </td>&nbsp;&nbsp;&nbsp;&nbsp;
+                  <td class="col-2" *ngIf="produtoPedido.botaoExcluir">
+                    <button type="button" tooltip="Excluir" class="btn btn-danger btn-sm" (click)="openModal($event, template, produtoPedido.nome, produtoPedido.id)">
+                      <i class="fa fa-trash"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+              </table>
+      </div>
+      <div class="card-footer">
+        <div id="botaoCadastrar">
+          <button class="btn btn-lg btn-primary btn-block" *ngIf="editarPedido && !pedido.possuiNotaFiscal" (click)="EditarPedido()" type="submit">Editar Pedido</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <button class="btn btn-lg btn-success btn-block" *ngIf="editarPedido && !pedido.possuiNotaFiscal" (click)="FinalizarPedido()" type="submit">Finalizar Pedido</button>
+        </div>
+      </div>
+            </form>
+      <ng-template #template>
+        <div class="modal-body text-center">
+          <p>Tem certeza que deseja deletar o(a) cliente {{this.produtoNome}}?</p>
+          <button type="button" class="btn btn-default" (click)="confirm()" >Sim</button>
+          <button type="button" class="btn btn-primary" (click)="decline()" >Não</button>
+        </div>
+      </ng-template>
+<label class="required">Campos Obrigatórios</label>

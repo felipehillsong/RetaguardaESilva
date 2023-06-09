@@ -1,0 +1,55 @@
+<br>
+<button type="button" class="btn btn-primary btn-sm mr-2" tooltip="Voltar" (click)="Voltar()"><i class="fa-solid fa-circle-left"></i></button>
+<br>
+<app-titulo [titulo]=titulo></app-titulo>
+<br>
+<div>
+    <div class="card rounded shadow-sm">
+        <div class="p-3">
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label class="required" style="font-weight: bold;">Cliente</label>
+              <input type="text" readonly [(ngModel)]="pedido.clienteNome" class="form-control">
+            </div>
+            <div class="form-group col-md-6">
+              <label class="required" style="font-weight: bold;">Transportador</label>
+              <input type="text" readonly [(ngModel)]="pedido.transportadorNome" class="form-control">
+          </div>
+          <br>
+        </div>
+      </div>
+            <br>
+            <br>
+            <br>
+            <div class="form-group row container d-flex justify-content-center align-items-center">
+              <label class="required container d-flex justify-content-center align-items-center" style="font-weight: bold;">Preço Total</label>
+              <input type="text" id="precototal" readonly value="{{pedido.precoTotal | currency: 'BRL'}}" class="form-control">
+            </div>
+            <br>
+            <br>
+            <div class="form-group row container d-flex justify-content-center align-items-center">
+              <label class="required container d-flex justify-content-center align-items-center" style="font-weight: bold;">Status do Pedido</label>
+              <input type="text" id="precototal" readonly [(ngModel)]="pedido.statusPedido" class="form-control">
+            </div>
+            <br>
+            <div>
+              <table class="table table-striped">
+                <thead class="thead-dark">
+                  <tr>
+                  <th scope="col" class="col-2">Codigo</th>
+                  <th scope="col" class="col-3">Nome do Produto</th>
+                  <th scope="col" class="col-2">Preço de Venda</th>
+                  <th scope="col" class="col-4">Quantidade de Venda</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="pedido && pedido.produtos">
+                <tr *ngFor="let produto of pedido.produtos">
+                  <td class="col-2">{{produto.codigo}}</td>
+                  <td class="col-2">{{produto.nome}}</td>
+                  <td class="col-2">{{produto.precoVenda | currency: 'BRL'}}</td>
+                  <td class="col-2">{{produto.quantidadeVenda}}</td>
+                </tr>
+              </tbody>
+              </table>
+      </div>
+

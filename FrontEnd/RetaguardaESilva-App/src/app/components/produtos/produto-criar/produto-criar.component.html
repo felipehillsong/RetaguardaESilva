@@ -1,0 +1,81 @@
+<br>
+<button type="button" class="btn btn-primary btn-sm mr-2" tooltip="Voltar" (click)="Voltar()"><i class="fa-solid fa-circle-left"></i></button>
+<br>
+<app-titulo [titulo]=titulo></app-titulo>
+<br>
+<div class="form-row">
+    <div class="card rounded shadow-sm">
+      <form [formGroup]="form">
+        <div class="p-3">
+          <div class="row">
+            <div class="form-group col-md-10">
+              <label class="required" style="font-weight: bold;">Nome</label>
+              <input type="text" class="form-control" [ngClass]="cssValidator(f.nome)" formControlName="nome" placeholder="Nome" [(ngModel)]="produto.nome">
+              <div *ngIf="f.nome.errors?.required && f.nome.touched" class="invalid-feedback">
+                Nome é obrigatório.
+              </div>
+              <div *ngIf="f.nome.errors?.minlength" class="invalid-feedback">
+                Nome deve ter no mínimo 3 caracteres.
+              </div>
+              <div *ngIf="f.nome.errors?.maxlength" class="invalid-feedback">
+                Nome deve ter no máximo 50 caracteres.
+              </div>
+            </div>
+            <div class="form-group col-sm-2">
+              <mat-form-field appearance="standard">
+              <mat-label>Selecione o fornecedor</mat-label>
+                <mat-select formControlName="fornecedor">
+                  <mat-option *ngFor="let fornecedor of fornecedores" [value]="{id: fornecedor.id, name: fornecedor.nome}">
+                    {{fornecedor.nome}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-sm-3">
+              <label class="required" style="font-weight: bold;">Quantidade</label>
+              <input type="text" class="form-control" (keypress)="somenteNumeros($event)" [ngClass]="cssValidator(f.quantidade)" formControlName="quantidade" placeholder="Quantidade" [(ngModel)]="produto.quantidade">
+              <div *ngIf="f.quantidade.errors?.required && f.quantidade.touched" class="invalid-feedback">
+                Quantidade é obrigatório.
+              </div>
+            </div>
+            <div class="form-group col-sm-2">
+              <label class="required" style="font-weight: bold;">Preço de Compra</label>
+              <input type="text" class="form-control" mask="separator.2" [ngClass]="cssValidator(f.precoCompra)" formControlName="precoCompra" placeholder="Preço de compra" [(ngModel)]="produto.precoCompra">
+              <div *ngIf="f.precoCompra.errors?.required && f.precoCompra.touched" class="invalid-feedback">
+                Preço de compra é obrigatório.
+              </div>
+            </div>
+            <div class="form-group col-sm-2">
+              <label class="required" style="font-weight: bold;">Preço de Venda</label>
+              <input type="text" class="form-control" mask="separator.2" [ngClass]="cssValidator(f.precoVenda)" formControlName="precoVenda" placeholder="Preço de venda" [(ngModel)]="produto.precoVenda">
+              <div *ngIf="f.precoVenda.errors?.required && f.precoVenda.touched" class="invalid-feedback">
+                Preço de venda é obrigatório.
+              </div>
+            </div>
+            <div class="form-group col-sm-3">
+              <label class="required" style="font-weight: bold;">Código</label>
+              <input type="text" class="form-control" (keypress)="somenteNumeros($event)" [ngClass]="cssValidator(f.codigo)" formControlName="codigo" placeholder="Código" [(ngModel)]="produto.codigo">
+                <div *ngIf="f.codigo.errors?.required && f.codigo.touched" class="invalid-feedback">
+                  Código é obrigatório.
+                </div>
+              </div>
+              <div class="form-group col-sm-2">
+                <label class="required" style="font-weight: bold;">Data de Cadastro</label>
+                <input type="date" class="form-control" [ngClass]="(f.dataCadastroProduto)" formControlName="dataCadastroProduto" placeholder="Data de Cadastro" [(ngModel)]="produto.dataCadastroProduto">
+                <div *ngIf="f.dataCadastroProduto.errors?.required && f.dataCadastroProduto.touched" class="invalid-feedback">
+                  Data de cadastro é obrigatório.
+                </div>
+              </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div id="botaoCadastrar">
+            <button class="btn btn-lg btn-primary btn-block" [disabled]="!form.valid" (click)="Enviar()" type="submit">Cadastrar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+</div>
+<label class="required">Campos Obrigatórios</label>

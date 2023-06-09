@@ -1,0 +1,52 @@
+<div class="form-inline">
+<app-titulo (validarCrud)="validaCrud($event)" [titulo]=titulo [iconClass]=iconClass [novo]=novo></app-titulo>
+<br>
+<div class="card rounded shadow-sm p-3">
+<div class="input-group mb-2" id="inputPesquisa">
+  <div class="input-group-prepend">
+    <div class="input-group-text">Filtro: </div>
+  </div>
+  <input type="text" class="form-control" placeholder="Pesquisar Clientes" [(ngModel)]="clienteLista">
+</div>
+<table class="table table-striped">
+  <thead class="thead-dark">
+    <tr>
+    <th>Nome</th>
+    <th>Telefone</th>
+    <th>Email</th>
+    <th>Data de Cadastro</th>
+    <th>Opções</th>
+  </tr>
+</thead>
+<tbody *ngIf="clientes && clientes.length">
+  <tr *ngFor="let cliente of clientesFiltrados">
+    <td>{{cliente.nome}}</td>
+    <td>{{cliente.telefone}}</td>
+    <td>{{cliente.email}}</td>
+    <td>{{cliente.dataCadastroCliente | date: "dd/MM/yyyy"}}</td>
+    <td>
+      <button type="button" tooltip="Editar" class="btn btn-primary btn-sm mr-2" *ngIf="visualizarEditar" (click)="editar(cliente.id)">
+        <i class="fa fa-edit"></i></button>&nbsp;
+        <button type="button" tooltip="Visualizar" class="btn btn-secondary btn-sm mr-2" *ngIf="visualizarDetalhe" (click)="detalhe(cliente.id)">
+          <i class="fa-solid fa-file"></i></button>&nbsp;
+      <button type="button" tooltip="Excluir" class="btn btn-danger btn-sm" *ngIf="visualizarExcluir" (click)="openModal($event, template, cliente.nome, cliente.id)">
+        <i class="fa fa-trash"></i></button>
+    </td>
+  </tr>
+</tbody>
+<tfoot *ngIf="!clientes.length">
+  <tr>
+    <td colspan="8" class="text-center">
+      <h4>Nenhum cliente encontrado!</h4>
+    </td>
+  </tr>
+</tfoot>
+</table>
+</div>
+<ng-template #template>
+  <div class="modal-body text-center">
+    <p>Tem certeza que deseja deletar o(a) cliente {{this.clienteNome}}?</p>
+    <button type="button" class="btn btn-default" (click)="confirm()" >Sim</button>
+    <button type="button" class="btn btn-primary" (click)="decline()" >Não</button>
+  </div>
+</ng-template>

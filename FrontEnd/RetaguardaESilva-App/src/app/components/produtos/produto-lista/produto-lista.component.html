@@ -1,0 +1,56 @@
+<div class="form-inline">
+  <app-titulo (validarCrud)="validaCrud($event)" [titulo]=titulo [iconClass]=iconClass [novo]=novo></app-titulo>
+  <br>
+  <div class="card rounded shadow-sm p-3">
+  <div class="input-group mb-2" id="inputPesquisa">
+    <div class="input-group-prepend">
+      <div class="input-group-text">Filtro: </div>
+    </div>
+    <input type="text" class="form-control" placeholder="Pesquisar Produtos" [(ngModel)]="produtoLista">
+  </div>
+  <table class="table table-striped">
+    <thead class="thead-dark">
+      <tr>
+      <th>Codigo</th>
+      <th>Nome</th>
+      <th>Quantidade</th>
+      <th>Preço de Compra</th>
+      <th>Preço de Venda</th>
+      <th>Data de Cadastro</th>
+      <th>Opções</th>
+    </tr>
+  </thead>
+  <tbody *ngIf="produtos && produtos.length">
+    <tr *ngFor="let produto of produtosFiltrados">
+      <td>{{produto.codigo}}</td>
+      <td>{{produto.nome}}</td>
+      <td>{{produto.quantidade}}</td>
+      <td>{{produto.precoCompra | currency: 'BRL' }}</td>
+      <td>{{produto.precoVenda | currency: 'BRL' }}</td>
+      <td>{{produto.dataCadastroProduto | date: "dd/MM/yyyy"}}</td>
+      <td>
+        <button type="button" tooltip="Editar" class="btn btn-primary btn-sm mr-2" *ngIf="visualizarEditar" (click)="editar(produto.id)">
+          <i class="fa fa-edit"></i></button>&nbsp;
+          <button type="button" tooltip="Visualizar" class="btn btn-secondary btn-sm mr-2" *ngIf="visualizarDetalhe" (click)="detalhe(produto.id)">
+            <i class="fa-solid fa-file"></i></button>&nbsp;
+        <button type="button" tooltip="Excluir" class="btn btn-danger btn-sm" *ngIf="visualizarExcluir" (click)="openModal($event, template, produto.nome, produto.id)">
+          <i class="fa fa-trash"></i></button>
+      </td>
+    </tr>
+  </tbody>
+  <tfoot *ngIf="!produtos.length">
+    <tr>
+      <td colspan="8" class="text-center">
+        <h4>Nenhum produto encontrado!</h4>
+      </td>
+    </tr>
+  </tfoot>
+  </table>
+  </div>
+  <ng-template #template>
+    <div class="modal-body text-center">
+      <p>Tem certeza que deseja deletar o produto {{this.produtoNome}}?</p>
+      <button type="button" class="btn btn-default" (click)="confirm()" >Sim</button>
+      <button type="button" class="btn btn-primary" (click)="decline()" >Não</button>
+    </div>
+  </ng-template>

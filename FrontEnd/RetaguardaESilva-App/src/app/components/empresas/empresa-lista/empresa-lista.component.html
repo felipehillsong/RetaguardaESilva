@@ -1,0 +1,52 @@
+<div class="form-inline">
+<app-titulo (validarCrud)="validaCrud($event)" [titulo]=titulo [iconClass]=iconClass [novo]=novo></app-titulo>
+<br>
+<div class="card rounded shadow-sm p-3">
+<div class="input-group mb-2" id="inputPesquisa">
+  <div class="input-group-prepend">
+    <div class="input-group-text">Filtro: </div>
+  </div>
+  <input type="text" class="form-control" placeholder="Pesquisar Empresas" [(ngModel)]="empresaLista">
+</div>
+<table class="table table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>Nome</th>
+        <th>Telefone</th>
+        <th>Email</th>
+        <th>Data de Cadastro</th>
+        <th>Opções</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="empresas && empresas.length">
+      <tr *ngFor="let empresa of empresasFiltrados">
+        <td>{{empresa.nome}}</td>
+        <td>{{empresa.telefone}}</td>
+        <td>{{empresa.email}}</td>
+        <td>{{empresa.dataCadastroEmpresa | date: "dd/MM/yyyy"}}</td>
+        <td>
+          <button type="button" tooltip="Editar" class="btn btn-primary btn-sm mr-2" *ngIf="visualizarEditar" (click)="editar(empresa.id)">
+            <i class="fa fa-edit"></i></button>&nbsp;
+            <button type="button" tooltip="Visualizar" class="btn btn-secondary btn-sm mr-2" *ngIf="visualizarDetalhe" (click)="detalhe(empresa.id)">
+              <i class="fa-solid fa-file"></i></button>&nbsp;
+          <button type="button" tooltip="Excluir" class="btn btn-danger btn-sm" *ngIf="visualizarExcluir" (click)="openModal($event, template, empresa.nome, empresa.id)">
+            <i class="fa fa-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot *ngIf="!empresas.length">
+      <tr>
+        <td class="text-center" colspan="8">
+          <h4>Nenhuma empresa encontrada!</h4>
+        </td>
+      </tr>
+    </tfoot>
+</table>
+</div>
+<ng-template #template>
+  <div class="modal-body text-center">
+    <p>Tem certeza que deseja deletar o(a) cliente {{this.empresaNome}}?</p>
+    <button type="button" class="btn btn-default" (click)="confirm()" >Sim</button>
+    <button type="button" class="btn btn-primary" (click)="decline()" >Não</button>
+  </div>
+</ng-template>

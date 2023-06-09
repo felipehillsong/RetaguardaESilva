@@ -1,0 +1,39 @@
+<div class="form-inline">
+  <br>
+  <button type="button" class="btn btn-primary btn-sm mr-2" tooltip="Voltar" (click)="Voltar()"><i class="fa-solid fa-circle-left"></i></button>
+  <br>
+  <app-titulo [titulo]=titulo [iconClass]=iconClass></app-titulo>
+  <br>
+  <div class="card rounded shadow-sm p-3">
+  <div class="input-group mb-2" id="inputPesquisa">
+    <div class="input-group-prepend">
+      <div class="input-group-text">Filtro: </div>
+    </div>
+    <input type="text" class="form-control" placeholder="Pesquisar Endereço" [(ngModel)]="enderecoProdutoLista">
+  </div>
+  <table class="table table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>Nome do Endereço</th>
+      <th>Nome do Produto</th>
+      <th>Data de Cadastro</th>
+      <th>Ativo</th>
+    </tr>
+  </thead>
+  <tbody *ngIf="enderecosProdutos && enderecosProdutos.length">
+    <tr *ngFor="let enderecoProduto of enderecosProdutosFiltrados">
+      <td>{{enderecoProduto.nomeEndereco}}</td>
+      <td>{{enderecoProduto.produtoNome}}</td>
+      <td>{{enderecoProduto.dataCadastroEnderecoProduto | date: "dd/MM/yyyy"}}</td>
+      <td>{{enderecoProduto.ativoView}}</td>
+    </tr>
+  </tbody>
+  <tfoot *ngIf="!enderecosProdutos.length">
+    <tr>
+      <td colspan="8" class="text-center">
+        <h4>Nenhum Endereço encontrado!</h4>
+      </td>
+    </tr>
+  </tfoot>
+  </table>
+  </div>

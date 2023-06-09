@@ -1,0 +1,535 @@
+<br>
+<button type="button" class="btn btn-primary btn-sm mr-2" tooltip="Voltar" (click)="Voltar()"><i class="fa-solid fa-circle-left"></i></button>
+<br>
+<app-titulo [titulo]=titulo></app-titulo>
+<br>
+<h3 id="nomeUsuario">{{nome}}</h3>
+<div class="card rounded shadow-sm">
+  <form [formGroup]="form">
+  <div class="container">
+    <div class="row">
+      <div class="col-2">
+        <div class="row">
+          <div class="form-group">
+            <h1>Cliente</h1>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Visualizar Clientes</label>
+            <input class="form-check-input" (click)="todosClientes()" formControlName="visualizarCliente" [(ngModel)]="permissoes.visualizarCliente" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Cadastro</label>
+            <input class="form-check-input" (click)="liberarTodosClientes()" formControlName="clienteCadastro" [(ngModel)]="permissoes.clienteCadastro" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Editar</label>
+            <input class="form-check-input" (click)="liberarTodosClientes()" formControlName="clienteEditar" [(ngModel)]="permissoes.clienteEditar" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Detalhe</label>
+            <input class="form-check-input" (click)="liberarTodosClientes()" formControlName="clienteDetalhe" [(ngModel)]="permissoes.clienteDetalhe" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Excluir</label>
+            <input class="form-check-input" (click)="liberarTodosClientes()" formControlName="clienteExcluir" [(ngModel)]="permissoes.clienteExcluir" type="checkbox">
+          </div>
+        </div>
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="row">
+          <div class="form-group">
+            <h1>Estoque</h1>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Visualizar Estoques</label>
+            <input class="form-check-input" (click)="todosEstoques()" formControlName="visualizarEstoque" [(ngModel)]="permissoes.visualizarEstoque" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Editar</label>
+            <input class="form-check-input" (click)="liberarTodosEstoques()" formControlName="estoqueEditar" [(ngModel)]="permissoes.estoqueEditar" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Detalhe</label>
+            <input class="form-check-input" (click)="liberarTodosEstoques()" formControlName="estoqueDetalhe" [(ngModel)]="permissoes.estoqueDetalhe" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Excluir</label>
+            <input class="form-check-input" (click)="liberarTodosEstoques()" formControlName="estoqueExcluir" [(ngModel)]="permissoes.estoqueExcluir" type="checkbox">
+          </div>
+        </div>
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="row">
+          <div class="form-group">
+            <h1>Endereço Produto</h1>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Visualizar Endereço Produto</label>
+            <input class="form-check-input" (click)="todosEnderecosProdutos()" formControlName="visualizarEnderecoProduto" [(ngModel)]="permissoes.visualizarEnderecoProduto" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Cadastro</label>
+            <input class="form-check-input" (click)="liberarEnderecosProdutos()" formControlName="enderecoProdutoCadastro" [(ngModel)]="permissoes.enderecoProdutoCadastro" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Editar</label>
+            <input class="form-check-input" (click)="liberarEnderecosProdutos()" formControlName="enderecoProdutoEditar" [(ngModel)]="permissoes.enderecoProdutoEditar" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Detalhe</label>
+            <input class="form-check-input" (click)="liberarEnderecosProdutos()" formControlName="enderecoProdutoDetalhe" [(ngModel)]="permissoes.enderecoProdutoDetalhe" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Excluir</label>
+            <input class="form-check-input" (click)="liberarEnderecosProdutos()" formControlName="enderecoProdutoExcluir" [(ngModel)]="permissoes.enderecoProdutoExcluir" type="checkbox">
+          </div>
+        </div>
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="row">
+          <div class="form-group">
+            <h1>Fornecedor</h1>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Visualizar Fornecedores</label>
+            <input class="form-check-input" (click)="todosFornecedores()" formControlName="visualizarFornecedor" [(ngModel)]="permissoes.visualizarFornecedor" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Cadastro</label>
+            <input class="form-check-input" (click)="liberarTodosFornecedores()" formControlName="fornecedorCadastro" [(ngModel)]="permissoes.fornecedorCadastro" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Editar</label>
+            <input class="form-check-input" (click)="liberarTodosFornecedores()" formControlName="fornecedorEditar" [(ngModel)]="permissoes.fornecedorEditar" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Detalhe</label>
+            <input class="form-check-input" (click)="liberarTodosFornecedores()" formControlName="fornecedorDetalhe" [(ngModel)]="permissoes.fornecedorDetalhe" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Excluir</label>
+            <input class="form-check-input" (click)="liberarTodosFornecedores()" formControlName="fornecedorExcluir" [(ngModel)]="permissoes.fornecedorExcluir" type="checkbox">
+          </div>
+        </div>
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="row">
+          <div class="form-group">
+            <h1>Funcionario</h1>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Visualizar Funcionarios</label>
+            <input class="form-check-input" (click)="todosFuncionarios()" formControlName="visualizarFuncionario" [(ngModel)]="permissoes.visualizarFuncionario" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Cadastro</label>
+            <input class="form-check-input" (click)="liberarTodosFuncionarios()" formControlName="funcionarioCadastro" [(ngModel)]="permissoes.funcionarioCadastro" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Editar</label>
+            <input class="form-check-input" (click)="liberarTodosFuncionarios()" formControlName="funcionarioEditar" [(ngModel)]="permissoes.funcionarioEditar" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Detalhe</label>
+            <input class="form-check-input" (click)="liberarTodosFuncionarios()" formControlName="funcionarioDetalhe" [(ngModel)]="permissoes.funcionarioDetalhe" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Excluir</label>
+            <input class="form-check-input" (click)="liberarTodosFuncionarios()" formControlName="funcionarioExcluir" [(ngModel)]="permissoes.funcionarioExcluir" type="checkbox">
+          </div>
+        </div>
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="row">
+          <div class="form-group">
+            <h1>Produto</h1>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Visualizar Produtos</label>
+            <input class="form-check-input" (click)="todosProdutos()" formControlName="visualizarProduto" [(ngModel)]="permissoes.visualizarProduto" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Cadastro</label>
+            <input class="form-check-input" (click)="liberarTodosProdutos()" formControlName="produtoCadastro" [(ngModel)]="permissoes.produtoCadastro" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Editar</label>
+            <input class="form-check-input" (click)="liberarTodosProdutos()" formControlName="produtoEditar" [(ngModel)]="permissoes.produtoEditar" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Detalhe</label>
+            <input class="form-check-input" (click)="liberarTodosProdutos()" formControlName="produtoDetalhe" [(ngModel)]="permissoes.produtoDetalhe" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Excluir</label>
+            <input class="form-check-input" (click)="liberarTodosProdutos()" formControlName="produtoExcluir" [(ngModel)]="permissoes.produtoExcluir" type="checkbox">
+          </div>
+        </div>
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="row">
+          <div class="form-group">
+            <h1>Transportador</h1>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Visualizar Transportadores</label>
+            <input class="form-check-input" (click)="todosTransportadores()" formControlName="visualizarTransportador" [(ngModel)]="permissoes.visualizarTransportador" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Cadastro</label>
+            <input class="form-check-input" (click)="liberarTodosTransportadores()" formControlName="transportadorCadastro" [(ngModel)]="permissoes.transportadorCadastro" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Editar</label>
+            <input class="form-check-input" (click)="liberarTodosTransportadores()" formControlName="transportadorEditar" [(ngModel)]="permissoes.transportadorEditar" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Detalhe</label>
+            <input class="form-check-input" (click)="liberarTodosTransportadores()" formControlName="transportadorDetalhe" [(ngModel)]="permissoes.transportadorDetalhe" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Excluir</label>
+            <input class="form-check-input" (click)="liberarTodosTransportadores()" formControlName="transportadorExcluir" [(ngModel)]="permissoes.transportadorExcluir" type="checkbox">
+          </div>
+        </div>
+        </div>
+      </div>
+      <div class="col-2" *ngIf="visualizarPermissaoEmpresa">
+        <div class="row">
+          <div class="form-group">
+            <h1>Empresa</h1>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Visualizar Empresas</label>
+            <input class="form-check-input" (click)="todasEmpresas()" formControlName="visualizarEmpresa" [(ngModel)]="permissoes.visualizarEmpresa" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Cadastro</label>
+            <input class="form-check-input" (click)="liberarTodasEmpresas()" formControlName="empresaCadastro" [(ngModel)]="permissoes.empresaCadastro" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Editar</label>
+            <input class="form-check-input" (click)="liberarTodasEmpresas()" formControlName="empresaEditar" [(ngModel)]="permissoes.empresaEditar" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Detalhe</label>
+            <input class="form-check-input" (click)="liberarTodasEmpresas()" formControlName="empresaDetalhe" [(ngModel)]="permissoes.empresaDetalhe" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Excluir</label>
+            <input class="form-check-input" (click)="liberarTodasEmpresas()" formControlName="empresaExcluir" [(ngModel)]="permissoes.empresaExcluir" type="checkbox">
+          </div>
+        </div>
+        </div>
+      </div>
+      <div class="col-2" *ngIf="visualizarPermissaoUsuario">
+        <div class="row">
+          <div class="form-group">
+            <h1>Usuario</h1>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Visualizar Usuarios</label>
+            <input class="form-check-input" (click)="todosUsuarios()" formControlName="visualizarUsuario" [(ngModel)]="permissoes.visualizarUsuario" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Cadastro</label>
+            <input class="form-check-input" (click)="liberarTodosUsuarios()" formControlName="usuarioCadastro" [(ngModel)]="permissoes.usuarioCadastro" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Editar</label>
+            <input class="form-check-input" (click)="liberarTodosUsuarios()" formControlName="usuarioEditar" [(ngModel)]="permissoes.usuarioEditar" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Detalhe</label>
+            <input class="form-check-input" (click)="liberarTodosUsuarios()" formControlName="usuarioPermissoes" [(ngModel)]="permissoes.usuarioPermissoes" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Excluir</label>
+            <input class="form-check-input" (click)="liberarTodosUsuarios()" formControlName="usuarioExcluir" [(ngModel)]="permissoes.usuarioExcluir" type="checkbox">
+          </div>
+        </div>
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="row">
+          <div class="form-group">
+            <h1>Pedido</h1>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Visualizar Pedidos</label>
+            <input class="form-check-input" (click)="todosPedidos()" formControlName="visualizarPedido" [(ngModel)]="permissoes.visualizarPedido" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Cadastro</label>
+            <input class="form-check-input" (click)="liberarTodosPedidos()" formControlName="pedidoCadastro" [(ngModel)]="permissoes.pedidoCadastro" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Editar</label>
+            <input class="form-check-input" (click)="liberarTodosPedidos()" formControlName="pedidoEditar"  [(ngModel)]="permissoes.pedidoEditar" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Detalhe</label>
+            <input class="form-check-input" (click)="liberarTodosPedidos()" formControlName="pedidoDetalhe" [(ngModel)]="permissoes.pedidoDetalhe" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Excluir</label>
+            <input class="form-check-input" (click)="liberarTodosPedidos()" formControlName="pedidoExcluir" [(ngModel)]="permissoes.pedidoExcluir" type="checkbox">
+          </div>
+        </div>
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="row">
+          <div class="form-group">
+            <h1>Nota Fiscal</h1>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Visualizar Nota Fiscal</label>
+            <input class="form-check-input" (click)="todasNotasFiscais()" formControlName="visualizarNotaFiscal" [(ngModel)]="permissoes.visualizarNotaFiscal" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Cadastro</label>
+            <input class="form-check-input" (click)="liberarTodasNotasDiscais()" formControlName="notaFiscalCadastro" [(ngModel)]="permissoes.notaFiscalCadastro" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Gerar PDF</label>
+            <input class="form-check-input" (click)="liberarTodasNotasDiscais()" formControlName="notaFiscalGerarPDF"  [(ngModel)]="permissoes.notaFiscalGerarPDF" type="checkbox">
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Cancelar</label>
+            <input class="form-check-input" (click)="liberarTodasNotasDiscais()" formControlName="notaFiscalCancelar" [(ngModel)]="permissoes.notaFiscalCancelar" type="checkbox">
+          </div>
+        </div>
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="row">
+          <div class="form-group">
+            <h1>Relatorio</h1>
+        </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+          <div class="form-group form-check form-switch">
+            <label class="required" style="font-weight: bold;">Gerar Relatorios</label>
+            <input class="form-check-input" formControlName="gerarRelatorio" [(ngModel)]="permissoes.gerarRelatorio" type="checkbox">
+          </div>
+        </div>
+        </div>
+      </div>
+      </div>
+  </div>
+  <div class="card-footer">
+    <div id="botaoCadastrar">
+      <button class="btn btn-lg btn-primary" (click)="Salvar()" type="submit">Salvar</button>
+    </div>
+  </div>
+</form>
+</div>
