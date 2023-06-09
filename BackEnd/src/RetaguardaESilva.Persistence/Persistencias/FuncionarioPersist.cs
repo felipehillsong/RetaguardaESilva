@@ -15,7 +15,7 @@ namespace RetaguardaESilva.Persistence.Persistencias
         private readonly RetaguardaESilvaContext _context;
         public FuncionarioPersist(RetaguardaESilvaContext context)
         {
-            _context = context;            
+            _context = context;
         }  
 
         public async Task<IEnumerable<Funcionario>> GetAllFuncionariosAsync(int empresaId)

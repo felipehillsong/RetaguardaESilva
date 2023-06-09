@@ -15,7 +15,7 @@ namespace RetaguardaESilva.Persistence.Persistencias
         private readonly RetaguardaESilvaContext _context;
         public TransportadorPersist(RetaguardaESilvaContext context)
         {
-            _context = context;            
+            _context = context;
         }     
 
         public async Task<IEnumerable<Transportador>> GetAllTransportadoresAsync(int empresaId)
