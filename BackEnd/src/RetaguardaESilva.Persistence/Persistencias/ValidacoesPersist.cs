@@ -833,37 +833,46 @@ namespace RetaguardaESilva.Persistence.Persistencias
 
         public bool ExisteEnderecoProduto(int empresaId, int enderecoId, string nomeEndereco, bool isUpdate, out string mensagem)
         {
-            if (isUpdate)
+            if (ExisteEmpresaCadastrada(empresaId))
             {
-                var nomeEnderecoProdutoUpdate = _context.EnderecoProduto.AsNoTracking().FirstOrDefault(ep => ep.NomeEndereco == nomeEndereco && ep.EmpresaId == empresaId && ep.Id != enderecoId);
+                if (isUpdate)
+                {
+                    var nomeEnderecoProdutoUpdate = _context.EnderecoProduto.AsNoTracking().FirstOrDefault(ep => ep.NomeEndereco == nomeEndereco && ep.EmpresaId == empresaId && ep.Id != enderecoId);
 
-                if (nomeEnderecoProdutoUpdate == null)
-                {
-                    mensagem = MensagemDeSucesso.AtualizarOK;
-                    return false;
+                    if (nomeEnderecoProdutoUpdate == null)
+                    {
+                        mensagem = MensagemDeSucesso.AtualizarOK;
+                        return false;
+                    }
+                    else if (nomeEnderecoProdutoUpdate.NomeEndereco == nomeEndereco)
+                    {
+                        mensagem = MensagemDeErro.EnderecoProdutoSendoUsado;
+                        return true;
+                    }
                 }
-                else if (nomeEnderecoProdutoUpdate.NomeEndereco == nomeEndereco)
+                else
                 {
-                    mensagem = MensagemDeErro.EnderecoProdutoSendoUsado;
-                    return true;
+                    var nomeEnderecoProduto = _context.EnderecoProduto.AsNoTracking().FirstOrDefault(ep => ep.NomeEndereco == nomeEndereco && ep.EmpresaId == empresaId);
+                    if (nomeEnderecoProduto == null)
+                    {
+                        mensagem = MensagemDeSucesso.AtualizarOK;
+                        return false;
+                    }
+                    else if (nomeEnderecoProduto.NomeEndereco == nomeEndereco)
+                    {
+                        mensagem = MensagemDeErro.EnderecoProdutoSendoUsado;
+                        return true;
+                    }
                 }
+                mensagem = MensagemDeErro.ErroAoAtualizarCriar;
+                return false;
             }
             else
             {
-                var nomeEnderecoProduto = _context.EnderecoProduto.AsNoTracking().FirstOrDefault(ep => ep.NomeEndereco == nomeEndereco && ep.EmpresaId == empresaId);
-                if (nomeEnderecoProduto == null)
-                {
-                    mensagem = MensagemDeSucesso.AtualizarOK;
-                    return false;
-                }
-                else if (nomeEnderecoProduto.NomeEndereco == nomeEndereco)
-                {
-                    mensagem = MensagemDeErro.EnderecoProdutoSendoUsado;
-                    return true;
-                }
+                mensagem = MensagemDeErro.EmpresaProdutoInexistente;
+                return false;
             }
-            mensagem = MensagemDeErro.ErroAoAtualizarCriar;
-            return false;
+
         }
 
         public bool VerificaAdministrador(int empresaId, out string mensagem)

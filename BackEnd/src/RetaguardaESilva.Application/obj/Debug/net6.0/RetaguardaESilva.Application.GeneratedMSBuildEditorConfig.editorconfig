@@ -8,4 +8,4 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = RetaguardaESilva.Application
-build_property.ProjectDir = C:\Users\Felipe Silva\Documents\Exercicios-C-Sharp\RetaguardaESilva\BackEnd\src\RetaguardaESilva.Application\
+build_property.ProjectDir = C:\Users\Felipe Silva\Documents\RetaguardaESilva\BackEnd\src\RetaguardaESilva.Application\

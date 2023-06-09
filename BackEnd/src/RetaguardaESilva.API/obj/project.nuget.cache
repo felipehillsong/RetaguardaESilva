@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "vXYmsDBEiogaD0fHR3xeWZ4bZgzpC9QynKWaCWVCG0pCMVKErzxkgzji1HzUQ9nizgosBx8Wu7303fDeFzENmw==",
+  "dgSpecHash": "3XKVQZgQmZwt6LZRb8zO8xZU7rGMUxjuT7JjBtMlPDbyvtRTTEOmZbSiFA6f7K900K8XS6UxNG8pYv2+7Qb3Rg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Felipe Silva\\Documents\\Exercicios-C-Sharp\\RetaguardaESilva\\BackEnd\\src\\RetaguardaESilva.API\\RetaguardaESilva.API.csproj",
+  "projectFilePath": "C:\\Users\\Felipe Silva\\Documents\\RetaguardaESilva\\BackEnd\\src\\RetaguardaESilva.API\\RetaguardaESilva.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Felipe Silva\\.nuget\\packages\\anglesharp\\0.16.1\\anglesharp.0.16.1.nupkg.sha512",
     "C:\\Users\\Felipe Silva\\.nuget\\packages\\automapper\\11.0.0\\automapper.11.0.0.nupkg.sha512",
