@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "9NkPipPtIR5sMBzM1VfXg6t2+2nP9tnUkxIP7XoxljxDMkG9meciS3nXYScYC8TAjiUou0jpg43E46ozLIck2g==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Felipe Silva\\Documents\\Exercicios-C-Sharp\\RetaguardaESilva\\BackEnd\\src\\RetaguardaESilva.Domain\\RetaguardaESilva.Domain.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Felipe Silva\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}
