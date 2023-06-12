@@ -52,6 +52,7 @@ namespace RetaguardaESilva.Application.Enumeradores
         TodosPedidosConfirmadosCancelados = 42,
         TodosPedidosEmAnalise = 43,
         TodosPedidosConfirmados = 44,
-        TodosPedidosCancelados = 45
+        TodosPedidosCancelados = 45,
+        TodosNotasFiscais = 46,
     }
 }

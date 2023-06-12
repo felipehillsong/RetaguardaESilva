@@ -54,6 +54,7 @@ namespace RetaguardaESilva.Domain.Mensagem
         public const string EmpresaRelatorioNaoEncontrado = "Não foram encontrados nenhuma empresa nesse periodo";
         public const string ProdutoRelatorioNaoEncontrado = "Não foram encontrados nenhum produto nesse periodo";
         public const string PedidoRelatorioNaoEncontrado = "Não foram encontrados nenhum pedido nesse periodo";
+        public const string NotaFiscalRelatorioNaoEncontrado = "Não foram encontrados nenhuma nota fiscal nesse periodo";
         public const string EstoqueRelatorioNaoEncontrado = "Não foram encontrados nenhum estoque nesse periodo";
         public const string UsuarioRelatorioNaoEncontrado = "Não foram encontrados nenhum usuario nesse periodo";
         public const string ClienteRelatorioNaoEncontrado = "Não foram encontrados nenhum cliente nesse periodo";

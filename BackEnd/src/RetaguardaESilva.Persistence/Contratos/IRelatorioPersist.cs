@@ -55,5 +55,8 @@ namespace RetaguardaESilva.Persistence.Contratos
         IEnumerable<PedidoViewModel> GetAllPedidosEmAnalise(int empresaId, DateTime dataInicio, DateTime dataFinal);
         IEnumerable<PedidoViewModel> GetAllPedidosConfirmados(int empresaId, DateTime dataInicio, DateTime dataFinal);
         IEnumerable<PedidoViewModel> GetAllPedidosCancelados(int empresaId, DateTime dataInicio, DateTime dataFinal);
+        IEnumerable<NotaFiscalViewModel> GetAllNotasFiscais(int empresaId, DateTime dataInicio, DateTime dataFinal);
+        IEnumerable<NotaFiscalViewModel> GetAllNotasFiscaisAprovadas(int empresaId, DateTime dataInicio, DateTime dataFinal);
+        IEnumerable<NotaFiscalViewModel> GetAllNotasFiscaisCanceladas(int empresaId, DateTime dataInicio, DateTime dataFinal);
     }
 }
