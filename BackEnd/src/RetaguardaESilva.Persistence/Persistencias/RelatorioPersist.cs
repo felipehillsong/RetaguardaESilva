@@ -1408,5 +1408,57 @@ namespace RetaguardaESilva.Persistence.Persistencias
             }
             return pedidosRetorno;
         }
+
+        public IEnumerable<NotaFiscalViewModel> GetAllNotasFiscais(int empresaId, DateTime dataInicio, DateTime dataFinal)
+        {
+            var notasFiscais =  _context.NotaFiscal.AsNoTracking().Where(nf => nf.EmpresaId == empresaId && nf.DataCadastroNotaFiscal.Value.Date >= dataInicio && nf.DataCadastroNotaFiscal.Value.Date <= dataFinal).OrderBy(nf => nf.EmpresaId).ToList();
+            List<NotaFiscalViewModel> notaFiscalRetorno = new List<NotaFiscalViewModel>();
+            if (notasFiscais != null)
+            {
+                foreach (var item in notasFiscais)
+                {
+                    var pedido = _context.Pedido.AsNoTracking().FirstOrDefault(p => p.EmpresaId == item.EmpresaId && p.Id == item.PedidoId);
+                    var cliente = _context.Cliente.AsNoTracking().FirstOrDefault(c => c.EmpresaId == item.EmpresaId && c.Id == item.ClienteId);
+                    if (pedido != null && cliente != null)
+                    {
+                        if (item.Status == (int)StatusNotaFiscal.NotaFiscalAprovada)
+                        {
+                            var status = MensagemDeAlerta.NotaFiscalAprovada;
+                            notaFiscalRetorno.Add(new NotaFiscalViewModel(item.Id, item.PedidoId, cliente.Nome, item.QuantidadeItens, item.PrecoTotal, item.DataCadastroNotaFiscal, status, item.Status));
+                        }
+                        else if (item.Status == (int)StatusNotaFiscal.NotaFiscalCancelada)
+                        {
+                            var status = MensagemDeAlerta.NotaFiscalCancelada;
+                            notaFiscalRetorno.Add(new NotaFiscalViewModel(item.Id, item.PedidoId, cliente.Nome, item.QuantidadeItens, item.PrecoTotal, item.DataCadastroNotaFiscal, status, item.Status));
+                        }
+                    }
+                    else
+                    {
+                        var clienteSemNome = MensagemDeAlerta.ClienteExcluido;
+                        if (item.Status == (int)StatusNotaFiscal.NotaFiscalAprovada)
+                        {
+                            var status = MensagemDeAlerta.NotaFiscalAprovada;
+                            notaFiscalRetorno.Add(new NotaFiscalViewModel(item.Id, item.PedidoId, clienteSemNome, item.QuantidadeItens, item.PrecoTotal, item.DataCadastroNotaFiscal, status, item.Status));
+                        }
+                        else if (item.Status == (int)StatusNotaFiscal.NotaFiscalCancelada)
+                        {
+                            var status = MensagemDeAlerta.NotaFiscalCancelada;
+                            notaFiscalRetorno.Add(new NotaFiscalViewModel(item.Id, item.PedidoId, clienteSemNome, item.QuantidadeItens, item.PrecoTotal, item.DataCadastroNotaFiscal, status, item.Status));
+                        }
+                    }
+                }
+            }
+            return notaFiscalRetorno;
+        }
+
+        public IEnumerable<NotaFiscalViewModel> GetAllNotasFiscaisAprovadas(int empresaId, DateTime dataInicio, DateTime dataFinal)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<NotaFiscalViewModel> GetAllNotasFiscaisCanceladas(int empresaId, DateTime dataInicio, DateTime dataFinal)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

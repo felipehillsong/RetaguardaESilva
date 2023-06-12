@@ -569,6 +569,20 @@ namespace RetaguardaESilva.Controllers
                             }
                             return Ok(todosPedidosCancelados);
                         }
+                    case (int)TipoRelatorio.TodosNotasFiscais:
+                        if (dataInicio == null || dataFinal == null)
+                        {
+                            return NotFound(MensagemDeErro.SemDataRelatorio);
+                        }
+                        else
+                        {
+                            var todosNotasFiscais = await _relatorioService.GetAllNotasFiscaisAsync(empresaId, dataInicio, dataFinal);
+                            if (!todosNotasFiscais.Any())
+                            {
+                                return NotFound(MensagemDeErro.RelatorioSemRegistro);
+                            }
+                            return Ok(todosNotasFiscais);
+                        }
                     default:
                     return NotFound(MensagemDeErro.RelatorioNaoEncontrado);
                 }
