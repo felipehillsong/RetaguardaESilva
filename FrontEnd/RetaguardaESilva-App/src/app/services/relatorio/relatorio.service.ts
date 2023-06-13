@@ -12,6 +12,7 @@ import { Empresa } from 'src/app/models/empresa';
 import { Produto } from 'src/app/models/produto';
 import { Estoque } from 'src/app/models/estoque';
 import { Pedido } from 'src/app/models/pedido';
+import { NotaFiscal } from 'src/app/models/notaFiscal';
 
 @Injectable({
   providedIn: 'root'
@@ -59,6 +60,10 @@ public getRelatorioEstoques(codigoRelatorio: number, dataInicio: string, dataFin
 
 public getRelatorioPedidos(codigoRelatorio: number, dataInicio: string, dataFinal: string) : Observable<Pedido[]>{
   return this.http.get<Pedido[]>(`${this.baseURL}empresaId=${this.authService.empresaId()}&codigoRelatorio=${codigoRelatorio}&dataInicio=${dataInicio}&dataFinal=${dataFinal}`).pipe(take(1));
+}
+
+public getRelatorioNotasFiscais(codigoRelatorio: number, dataInicio: string, dataFinal: string) : Observable<NotaFiscal[]>{
+  return this.http.get<NotaFiscal[]>(`${this.baseURL}empresaId=${this.authService.empresaId()}&codigoRelatorio=${codigoRelatorio}&dataInicio=${dataInicio}&dataFinal=${dataFinal}`).pipe(take(1));
 }
 
 }

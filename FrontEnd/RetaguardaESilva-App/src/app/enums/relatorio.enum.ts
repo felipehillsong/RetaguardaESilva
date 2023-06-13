@@ -45,4 +45,5 @@ export enum Relatorio {
   TodosPedidosEmAnalise = 'Todos os Pedidos em Analise',
   TodosPedidosConfirmados = 'Todos os Pedidos Confirmados',
   TodosPedidosCancelados = 'Todos os Pedidos Cancelados',
+  TodosNotasFiscaisAprovadasCanceladas = 'Todas as Notas Fiscais'
 }

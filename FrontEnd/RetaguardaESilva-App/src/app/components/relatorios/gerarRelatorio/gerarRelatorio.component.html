@@ -376,3 +376,29 @@
   </tbody>
   </table>
 </div>
+<div *ngIf="todosNotasFiscais">
+  <table id="excel-notasFiscais" class="table table-striped">
+    <thead class="thead-dark">
+      <tr>
+      <th>Numero da Nota</th>
+      <th>Numero do Pedido</th>
+      <th>Nome do Cliente</th>
+      <th>Quantidade de Itens</th>
+      <th>Preço Total</th>
+      <th>Data de Cadastro do Pedido</th>
+      <th>Status da Nota</th>
+    </tr>
+  </thead>
+  <tbody *ngIf="notasFiscais && notasFiscais.length">
+    <tr *ngFor="let notaFiscal of notasFiscais">
+      <td>{{notaFiscal.id}}</td>
+      <td>{{notaFiscal.pedidoId}}</td>
+      <td>{{notaFiscal.nomeCliente}}</td>
+      <td>{{notaFiscal.quantidadeItens}}</td>
+      <td>{{notaFiscal.precoTotal}}</td>
+      <td>{{notaFiscal.dataCadastroNotaFiscal | date: "dd/MM/yyyy"}}</td>
+      <td>{{notaFiscal.statusNota}}</td>
+    </tr>
+  </tbody>
+  </table>
+</div>

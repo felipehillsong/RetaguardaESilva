@@ -12,6 +12,7 @@ import { Empresa } from 'src/app/models/empresa';
 import { Estoque } from 'src/app/models/estoque';
 import { Fornecedor } from 'src/app/models/fornecedor';
 import { Funcionario } from 'src/app/models/funcionario';
+import { NotaFiscal } from 'src/app/models/notaFiscal';
 import { Pedido } from 'src/app/models/pedido';
 import { Produto } from 'src/app/models/produto';
 import { Transportador } from 'src/app/models/transportador';
@@ -40,6 +41,7 @@ export class GerarRelatorioComponent implements OnInit {
   public produtos: Produto[] = [];
   public estoques: Estoque[] = [];
   public pedidos: Pedido[] = [];
+  public notasFiscais: NotaFiscal[] = [];
   todosClientes:boolean = false;
   todosFornecedores:boolean = false;
   todosFornecedoresProdutos:boolean = false;
@@ -50,6 +52,7 @@ export class GerarRelatorioComponent implements OnInit {
   todosProdutos:boolean = false;
   todosEstoques:boolean = false;
   todosPedidos:boolean = false;
+  todosNotasFiscais:boolean = false;
   codigoRelatorio!:number;
   dataInicio!:string;
   dataFinal!:string;
@@ -119,7 +122,8 @@ export class GerarRelatorioComponent implements OnInit {
       Relatorio.TodosPedidosEmAnaliseConfirmadosCancelados,
       Relatorio.TodosPedidosEmAnalise,
       Relatorio.TodosPedidosConfirmados,
-      Relatorio.TodosPedidosCancelados
+      Relatorio.TodosPedidosCancelados,
+      Relatorio.TodosNotasFiscaisAprovadasCanceladas
     ];
   }
 
@@ -1260,6 +1264,34 @@ export class GerarRelatorioComponent implements OnInit {
               }
             );
               break;
+        case Relatorio.TodosNotasFiscaisAprovadasCanceladas:
+            this.codigoRelatorio = 46;
+            if(this.dataInicio != "null" && this.dataFinal != "null"){
+              this.dataInicio = moment(this.dataInicio).format('DD/MM/YYYY');
+              this.dataFinal = moment(this.dataFinal).format('DD/MM/YYYY');
+            }
+            this.relatorioService.getRelatorioNotasFiscais(this.codigoRelatorio, this.dataInicio, this.dataFinal).subscribe(
+              (_NotasFiscais: NotaFiscal[]) => {
+                this.notasFiscais = _NotasFiscais;
+                this.todosNotasFiscais = true;
+                this.dataInicio = moment(this.dataInicio, 'DD/MM/YYYY').format('YYYY-MM-DD');
+                this.dataFinal = moment(this.dataFinal, 'DD/MM/YYYY').format('YYYY-MM-DD');
+                this.inputData = true;
+                this.dropRelatorio = true;
+                this.botaoGerar = false;
+                this.botaoResetar = true;
+                this.botaoGerarExcel = true;
+                this.fileName = Relatorio.TodosNotasFiscaisAprovadasCanceladas + '.xlsx';
+                this._changeDetectorRef.markForCheck();
+              },
+              error => {
+                this.dataInicio = moment(this.dataInicio, 'DD/MM/YYYY').format('YYYY-MM-DD');
+                this.dataFinal = moment(this.dataFinal, 'DD/MM/YYYY').format('YYYY-MM-DD');
+                this._changeDetectorRef.markForCheck();
+                alert(error.error)
+              }
+            );
+              break;
       default:
           alert("Erro ao gerar Relatorio");
           break;
@@ -1277,6 +1309,7 @@ export class GerarRelatorioComponent implements OnInit {
     let produtos = document.getElementById('excel-produtos');
     let estoques = document.getElementById('excel-estoques');
     let pedidos = document.getElementById('excel-pedidos');
+    let notasFiscais = document.getElementById('excel-notasFiscais');
     if(clientes){
       const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(clientes);
       const wb: XLSX.WorkBook = XLSX.utils.book_new();
@@ -1324,6 +1357,11 @@ export class GerarRelatorioComponent implements OnInit {
       XLSX.writeFile(wb, this.fileName);
     }else if(pedidos){
       const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(pedidos);
+      const wb: XLSX.WorkBook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Planilha1');
+      XLSX.writeFile(wb, this.fileName);
+    }else if(notasFiscais){
+      const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(notasFiscais);
       const wb: XLSX.WorkBook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, 'Planilha1');
       XLSX.writeFile(wb, this.fileName);
