@@ -583,6 +583,34 @@ namespace RetaguardaESilva.Controllers
                             }
                             return Ok(todosNotasFiscais);
                         }
+                    case (int)TipoRelatorio.TodosNotasFiscaisAprovados:
+                        if (dataInicio == null || dataFinal == null)
+                        {
+                            return NotFound(MensagemDeErro.SemDataRelatorio);
+                        }
+                        else
+                        {
+                            var todosNotasFiscaisAprovados = await _relatorioService.GetAllNotasFiscaisAprovadasAsync(empresaId, dataInicio, dataFinal);
+                            if (!todosNotasFiscaisAprovados.Any())
+                            {
+                                return NotFound(MensagemDeErro.RelatorioSemRegistro);
+                            }
+                            return Ok(todosNotasFiscaisAprovados);
+                        }
+                    case (int)TipoRelatorio.TodosNotasFiscaisCancelados:
+                        if (dataInicio == null || dataFinal == null)
+                        {
+                            return NotFound(MensagemDeErro.SemDataRelatorio);
+                        }
+                        else
+                        {
+                            var todosNotasFiscaisCancelados = await _relatorioService.GetAllNotasFiscaisCanceladasAsync(empresaId, dataInicio, dataFinal);
+                            if (!todosNotasFiscaisCancelados.Any())
+                            {
+                                return NotFound(MensagemDeErro.RelatorioSemRegistro);
+                            }
+                            return Ok(todosNotasFiscaisCancelados);
+                        }
                     default:
                     return NotFound(MensagemDeErro.RelatorioNaoEncontrado);
                 }

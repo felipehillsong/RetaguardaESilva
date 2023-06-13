@@ -123,7 +123,9 @@ export class GerarRelatorioComponent implements OnInit {
       Relatorio.TodosPedidosEmAnalise,
       Relatorio.TodosPedidosConfirmados,
       Relatorio.TodosPedidosCancelados,
-      Relatorio.TodosNotasFiscaisAprovadasCanceladas
+      Relatorio.TodosNotasFiscaisAprovadasCanceladas,
+      Relatorio.TodosNotasFiscaisAprovadas,
+      Relatorio.TodosNotasFiscaisCanceladas
     ];
   }
 
@@ -1292,6 +1294,62 @@ export class GerarRelatorioComponent implements OnInit {
               }
             );
               break;
+        case Relatorio.TodosNotasFiscaisAprovadas:
+            this.codigoRelatorio = 47;
+            if(this.dataInicio != "null" && this.dataFinal != "null"){
+              this.dataInicio = moment(this.dataInicio).format('DD/MM/YYYY');
+              this.dataFinal = moment(this.dataFinal).format('DD/MM/YYYY');
+            }
+            this.relatorioService.getRelatorioNotasFiscais(this.codigoRelatorio, this.dataInicio, this.dataFinal).subscribe(
+              (_NotasFiscais: NotaFiscal[]) => {
+                this.notasFiscais = _NotasFiscais;
+                this.todosNotasFiscais = true;
+                this.dataInicio = moment(this.dataInicio, 'DD/MM/YYYY').format('YYYY-MM-DD');
+                this.dataFinal = moment(this.dataFinal, 'DD/MM/YYYY').format('YYYY-MM-DD');
+                this.inputData = true;
+                this.dropRelatorio = true;
+                this.botaoGerar = false;
+                this.botaoResetar = true;
+                this.botaoGerarExcel = true;
+                this.fileName = Relatorio.TodosNotasFiscaisAprovadas + '.xlsx';
+                this._changeDetectorRef.markForCheck();
+              },
+              error => {
+                this.dataInicio = moment(this.dataInicio, 'DD/MM/YYYY').format('YYYY-MM-DD');
+                this.dataFinal = moment(this.dataFinal, 'DD/MM/YYYY').format('YYYY-MM-DD');
+                this._changeDetectorRef.markForCheck();
+                alert(error.error)
+              }
+            );
+              break;
+        case Relatorio.TodosNotasFiscaisCanceladas:
+            this.codigoRelatorio = 48;
+            if(this.dataInicio != "null" && this.dataFinal != "null"){
+              this.dataInicio = moment(this.dataInicio).format('DD/MM/YYYY');
+              this.dataFinal = moment(this.dataFinal).format('DD/MM/YYYY');
+            }
+            this.relatorioService.getRelatorioNotasFiscais(this.codigoRelatorio, this.dataInicio, this.dataFinal).subscribe(
+              (_NotasFiscais: NotaFiscal[]) => {
+                this.notasFiscais = _NotasFiscais;
+                this.todosNotasFiscais = true;
+                this.dataInicio = moment(this.dataInicio, 'DD/MM/YYYY').format('YYYY-MM-DD');
+                this.dataFinal = moment(this.dataFinal, 'DD/MM/YYYY').format('YYYY-MM-DD');
+                this.inputData = true;
+                this.dropRelatorio = true;
+                this.botaoGerar = false;
+                this.botaoResetar = true;
+                this.botaoGerarExcel = true;
+                this.fileName = Relatorio.TodosNotasFiscaisCanceladas + '.xlsx';
+                this._changeDetectorRef.markForCheck();
+              },
+              error => {
+                this.dataInicio = moment(this.dataInicio, 'DD/MM/YYYY').format('YYYY-MM-DD');
+                this.dataFinal = moment(this.dataFinal, 'DD/MM/YYYY').format('YYYY-MM-DD');
+                this._changeDetectorRef.markForCheck();
+                alert(error.error)
+              }
+            );
+              break;
       default:
           alert("Erro ao gerar Relatorio");
           break;
@@ -1393,6 +1451,7 @@ export class GerarRelatorioComponent implements OnInit {
     this.todosProdutos = false;
     this.todosEstoques = false;
     this.todosPedidos = false;
+    this.todosNotasFiscais = false;
     this.botaoGerarExcel = false;
     this.fileName = '';
   }

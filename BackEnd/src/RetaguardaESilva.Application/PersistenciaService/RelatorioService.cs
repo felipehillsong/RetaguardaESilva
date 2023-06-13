@@ -1349,14 +1349,72 @@ namespace RetaguardaESilva.Application.PersistenciaService
             }
         }
 
-        public Task<IEnumerable<NotasFiscaisDTO>> GetAllNotasFiscaisAprovadasAsync(int empresaId, string dataIncio, string dataFinal)
+        public async Task<IEnumerable<NotasFiscaisDTO>> GetAllNotasFiscaisAprovadasAsync(int empresaId, string dataIncio, string dataFinal)
         {
-            throw new NotImplementedException();
+            try
+            {
+                DateTime dataInicioConvertida = DateTime.ParseExact(dataIncio, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                DateTime dataFinalConvertida = DateTime.ParseExact(dataFinal, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                if (dataFinalConvertida < dataInicioConvertida)
+                {
+                    throw new Exception(MensagemDeErro.DataFinalMaiorFinal);
+                }
+                else
+                {
+                    List<NotasFiscaisDTO> notasFiscaisList = new List<NotasFiscaisDTO>();
+                    var notasFiscais = _relatorioPersist.GetAllNotasFiscaisAprovadas(empresaId, dataInicioConvertida, dataFinalConvertida);
+                    if (notasFiscais.Any())
+                    {
+                        foreach (var item in notasFiscais)
+                        {
+                            notasFiscaisList.Add(new NotasFiscaisDTO(item.Id, item.PedidoId, item.NomeCliente, item.QuantidadeItens, item.PrecoTotal, item.DataCadastroNotaFiscal, item.StatusNota, item.Status));
+                        }
+                        return notasFiscaisList;
+                    }
+                    else
+                    {
+                        throw new Exception(MensagemDeErro.NotaFiscalRelatorioNaoEncontrado);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
-        public Task<IEnumerable<NotasFiscaisDTO>> GetAllNotasFiscaisCanceladasAsync(int empresaId, string dataIncio, string dataFinal)
+        public async Task<IEnumerable<NotasFiscaisDTO>> GetAllNotasFiscaisCanceladasAsync(int empresaId, string dataIncio, string dataFinal)
         {
-            throw new NotImplementedException();
+            try
+            {
+                DateTime dataInicioConvertida = DateTime.ParseExact(dataIncio, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                DateTime dataFinalConvertida = DateTime.ParseExact(dataFinal, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                if (dataFinalConvertida < dataInicioConvertida)
+                {
+                    throw new Exception(MensagemDeErro.DataFinalMaiorFinal);
+                }
+                else
+                {
+                    List<NotasFiscaisDTO> notasFiscaisList = new List<NotasFiscaisDTO>();
+                    var notasFiscais = _relatorioPersist.GetAllNotasFiscaisCanceladas(empresaId, dataInicioConvertida, dataFinalConvertida);
+                    if (notasFiscais.Any())
+                    {
+                        foreach (var item in notasFiscais)
+                        {
+                            notasFiscaisList.Add(new NotasFiscaisDTO(item.Id, item.PedidoId, item.NomeCliente, item.QuantidadeItens, item.PrecoTotal, item.DataCadastroNotaFiscal, item.StatusNota, item.Status));
+                        }
+                        return notasFiscaisList;
+                    }
+                    else
+                    {
+                        throw new Exception(MensagemDeErro.NotaFiscalRelatorioNaoEncontrado);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }
