@@ -59,11 +59,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Felipe\\Documents\\RetaguardaESilva\\Retaguarda%20E%20Silva\\BackEnd\\src\\RetaguardaESilva.Domain\\RetaguardaESilva.Domain.csproj",
+      "projectUniqueName": "C:\\Users\\Felipe\\Documents\\RetaguardaESilva\\Retaguarda E Silva\\BackEnd\\src\\RetaguardaESilva.Domain\\RetaguardaESilva.Domain.csproj",
       "projectName": "RetaguardaESilva.Domain",
-      "projectPath": "C:\\Users\\Felipe\\Documents\\RetaguardaESilva\\Retaguarda%20E%20Silva\\BackEnd\\src\\RetaguardaESilva.Domain\\RetaguardaESilva.Domain.csproj",
+      "projectPath": "C:\\Users\\Felipe\\Documents\\RetaguardaESilva\\Retaguarda E Silva\\BackEnd\\src\\RetaguardaESilva.Domain\\RetaguardaESilva.Domain.csproj",
       "packagesPath": "C:\\Users\\Felipe\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Felipe\\Documents\\RetaguardaESilva\\Retaguarda%20E%20Silva\\BackEnd\\src\\RetaguardaESilva.Domain\\obj\\",
+      "outputPath": "C:\\Users\\Felipe\\Documents\\RetaguardaESilva\\Retaguarda E Silva\\BackEnd\\src\\RetaguardaESilva.Domain\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
