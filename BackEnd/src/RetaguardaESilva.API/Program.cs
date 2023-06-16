@@ -23,6 +23,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IClienteService, ClienteService>();
 builder.Services.AddScoped<IClientePersist, ClientePersist>();
+builder.Services.AddScoped<IMailService, MailService>();
 builder.Services.AddScoped<IEmpresaService, EmpresaService>();
 builder.Services.AddScoped<IEmpresaPersist, EmpresaPersist>();
 builder.Services.AddScoped<IEstoqueService, EstoqueService>();
