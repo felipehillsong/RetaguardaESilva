@@ -12,6 +12,7 @@ using RetaguardaESilva.Persistence.Persistencias;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,9 +26,10 @@ namespace RetaguardaESilva.Application.PersistenciaService
         private readonly IPedidoPersist _pedidoPersist;
         private readonly IPedidoNotaPersist _pedidoNotaPersist;
         private readonly IClientePersist _clientePersist;
+        private readonly IMailService _mailService;
         private readonly IMapper _mapper;
 
-        public PedidoService(IGeralPersist geralPersist, IValidacoesPersist validacoesPersist, IPedidoPersist pedidoPersist, IPedidoNotaPersist pedidoNotaPersist, IClientePersist clientePersist, IMapper mapper)
+        public PedidoService(IGeralPersist geralPersist, IValidacoesPersist validacoesPersist, IPedidoPersist pedidoPersist, IPedidoNotaPersist pedidoNotaPersist, IClientePersist clientePersist, IMapper mapper, IMailService mailService)
         {
             _geralPersist = geralPersist;
             _validacoesPersist = validacoesPersist;
@@ -35,6 +37,7 @@ namespace RetaguardaESilva.Application.PersistenciaService
             _pedidoNotaPersist = pedidoNotaPersist;
             _clientePersist = clientePersist;
             _mapper = mapper;
+            _mailService = mailService;
         }
 
         public async Task<PedidoCreateDTO> AddPedido(PedidoCreateDTO model)
@@ -87,6 +90,17 @@ namespace RetaguardaESilva.Application.PersistenciaService
                                 throw new Exception(MensagemDeErro.ErroAoCadastrarItensPedido);
                             }
                         }
+                        List<String> produtosEmails = new List<String>();
+                        foreach (var item in model.Produtos)
+                        {
+                            decimal valorTotal = item.QuantidadeVenda * item.PrecoVenda;
+                            produtosEmails.Add("\nNome do produto: " + item.Nome + "\nQuantidade de compra: " + item.QuantidadeVenda.ToString() + "\nValor de compra do produto: " + item.PrecoVenda.ToString("C", new CultureInfo("pt-BR")) + "\nValor Total: " + valorTotal.ToString("C", new CultureInfo("pt-BR")));
+                        }
+                        var produtosEmail = string.Join("\n", produtosEmails);
+                        var clienteEmail = await _clientePersist.GetClienteByIdAsync(model.EmpresaId, model.ClienteId);
+                        var assunto = MensagemDeAlerta.EmailPedidoEmAnalise;
+                        var corpo = String.Concat(MensagemDeAlerta.EmailPedidoEmAnaliseCorpo, retornoPedido.Id.ToString() + ".", MensagemDeAlerta.EmailPedidoProdutos, "\n"+produtosEmail, MensagemDeAlerta.EmailPedidoValorTotal, retornoPedido.PrecoTotal.ToString("C", new CultureInfo("pt-BR"))).ToString();
+                        _mailService.SendMail(clienteEmail.Email, assunto, corpo, false);
                         var retornoPedidoCompleto = _mapper.Map<PedidoCreateDTO>(retornoPedido);
                         return retornoPedidoCompleto;
                     }
@@ -182,6 +196,17 @@ namespace RetaguardaESilva.Application.PersistenciaService
                                 await _geralPersist.SaveChangesAsync();
                             }
                         }
+                        List<String> produtosEmails = new List<String>();
+                        foreach (var item in model.Produtos)
+                        {
+                            decimal valorTotal = item.QuantidadeVenda * item.PrecoVenda;
+                            produtosEmails.Add("\nNome do produto: " + item.Nome + "\nQuantidade de compra: " + item.QuantidadeVenda.ToString() + "\nValor de compra do produto: " + item.PrecoVenda.ToString("C", new CultureInfo("pt-BR")) + "\nValor Total: " + valorTotal.ToString("C", new CultureInfo("pt-BR")));
+                        }
+                        var produtosEmail = string.Join("\n", produtosEmails);
+                        var clienteEmail = await _clientePersist.GetClienteByIdAsync(model.EmpresaId, model.ClienteId);
+                        var assunto = MensagemDeAlerta.EmailPedidoEmAnalise;
+                        var corpo = String.Concat(MensagemDeAlerta.EmailPedidoEmAnaliseAtualizarCorpo, retornoPedido.Id.ToString() + ".", MensagemDeAlerta.EmailPedidoProdutos, "\n" + produtosEmail, MensagemDeAlerta.EmailPedidoValorTotal, retornoPedido.PrecoTotal.ToString("C", new CultureInfo("pt-BR"))).ToString();
+                        _mailService.SendMail(clienteEmail.Email, assunto, corpo, false);
                         var retornoPedidoCompleto = _mapper.Map<PedidoUpdateDTO>(retornoPedido);
                         return retornoPedidoCompleto;
                     }

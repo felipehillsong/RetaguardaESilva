@@ -16,5 +16,10 @@ namespace RetaguardaESilva.Domain.Mensagem
         public const string NotaFiscalAprovada = "Nota fiscal aprovada";
         public const string NotaFiscalCancelada = "Nota fiscal cancelada";
         public const string ClienteExcluido = "Cliente excluído";
+        public const string EmailPedidoEmAnalise = "Pedido em análise";
+        public const string EmailPedidoEmAnaliseCorpo = "Seu pedido encontra-se pendente de autorização de venda. O numero do pedido é: ";
+        public const string EmailPedidoEmAnaliseAtualizarCorpo = "Os produtos do seu pedido foram atualizado e pendente de autorização de venda. O numero do pedido é: ";
+        public const string EmailPedidoProdutos = " Seus produtos são: ";
+        public const string EmailPedidoValorTotal = "\n\nO valor total do pedido é: ";
     }
 }

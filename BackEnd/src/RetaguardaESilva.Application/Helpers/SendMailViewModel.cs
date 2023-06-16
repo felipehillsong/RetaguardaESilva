@@ -8,7 +8,7 @@ namespace RetaguardaESilva.Application.Helpers
 {
     public class SendMailViewModel
     {
-        public string[] Emails { get; set; }
+        public string Emails { get; set; }
 
         public string Assunto { get; set; }
 

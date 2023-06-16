@@ -15,20 +15,17 @@ namespace RetaguardaESilva.Application.PersistenciaService
         private int portNumber => 587;
         private string emailFromAddress => "retaguardaesilva@hotmail.com";
         private string password => "jesusCRISTO@33";
-        public void AddEmailsToMailMessage(MailMessage mailMessage, string[] emails)
+        public void AddEmailsToMailMessage(MailMessage mailMessage, string email)
         {
-            foreach (var email in emails)
-            {
-                mailMessage.To.Add(email);
-            }
+            mailMessage.To.Add(email);
         }
 
-        public void SendMail(string[] emails, string subject, string body, bool isHtml = false)
+        public void SendMail(string email, string subject, string body, bool isHtml = false)
         {
             using (MailMessage mailMessage = new MailMessage())
             {
                 mailMessage.From = new MailAddress(emailFromAddress);
-                AddEmailsToMailMessage(mailMessage, emails);
+                AddEmailsToMailMessage(mailMessage, email);
                 mailMessage.Subject = subject;
                 mailMessage.Body = body;
                 mailMessage.IsBodyHtml = isHtml;
