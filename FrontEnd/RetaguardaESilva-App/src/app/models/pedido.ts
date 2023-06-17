@@ -12,5 +12,6 @@ export interface Pedido {
   statusPedido:string;
   status:number;
   possuiNotaFiscal:boolean;
+  enviarEmailAtualizar:boolean;
   produtos: Array<Produto>;
 }

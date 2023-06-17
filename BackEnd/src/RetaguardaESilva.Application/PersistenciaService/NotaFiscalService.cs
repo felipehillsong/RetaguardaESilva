@@ -13,6 +13,7 @@ using RetaguardaESilva.Persistence.Persistencias;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,9 +29,11 @@ namespace RetaguardaESilva.Application.PersistenciaService
         private readonly IPedidoPersist _pedidoPersist;
         private readonly IPedidoNotaPersist _pedidoNotaPersist;
         private readonly ITransportadorPersist _transportadorPersist;
+        private readonly IClientePersist _clientePersist;
+        private readonly IMailService _mailService;
         private readonly IMapper _mapper;
 
-        public NotaFiscalService(IGeralPersist geralPersist, INotaFiscalPersist notaFiscalPersist, ITransportadorPersist transportadorPersist, IValidacoesPersist validacoesPersist, IPedidoPersist pedidoPersist, IPedidoNotaPersist pedidoNotaPersist, IMapper mapper)
+        public NotaFiscalService(IGeralPersist geralPersist, INotaFiscalPersist notaFiscalPersist, ITransportadorPersist transportadorPersist, IValidacoesPersist validacoesPersist, IPedidoPersist pedidoPersist, IPedidoNotaPersist pedidoNotaPersist, IMapper mapper, IMailService mailService, IClientePersist clientePersist)
         {
             _geralPersist = geralPersist;
             _validacoesPersist = validacoesPersist;
@@ -39,12 +42,15 @@ namespace RetaguardaESilva.Application.PersistenciaService
             _pedidoNotaPersist = pedidoNotaPersist;
             _transportadorPersist = transportadorPersist;
             _mapper = mapper;
+            _mailService = mailService;
+            _clientePersist = clientePersist;
         }
 
         public async Task<NotaFiscalDTO> AddNotaFiscal(NotaFiscalDTO model)
         {
             try
             {
+                List<Produto> produtosNotaEmail = new List<Produto>();
                 var pedido = await _pedidoPersist.GetPedidoByIdAsync(model.EmpresaId, model.PedidoId);
                 var notaFiscalExistente = await _notaFiscalPersist.GetNotaFiscalPedidoByIdAsync(model.EmpresaId, model.PedidoId);
                 if (pedido == null || notaFiscalExistente != null)
@@ -65,6 +71,7 @@ namespace RetaguardaESilva.Application.PersistenciaService
                         }
                         else
                         {
+                            produtosNotaEmail.Add(produto);
                             item.Status = (int)StatusPedido.PedidoConfirmado;
                             _geralPersist.Update<Produto>(produto);
                             await _geralPersist.SaveChangesAsync();
@@ -102,6 +109,10 @@ namespace RetaguardaESilva.Application.PersistenciaService
                     if (await _geralPersist.SaveChangesAsync())
                     {
                         var notaFiscal = await _notaFiscalPersist.GetNotaFiscalByIdAsync(notaFiscalDTO.EmpresaId, notaFiscalDTO.Id);
+                        var clienteEmail = await _clientePersist.GetClienteByIdAsync(model.EmpresaId, model.ClienteId);
+                        var assunto = MensagemDeAlerta.EmailPedidoConfirmado;
+                        var corpo = String.Concat(MensagemDeAlerta.EmailPedidoConfirmadoCorpo, model.PedidoId.ToString() + ".", MensagemDeAlerta.EmailPedidoValorTotal, model.PrecoTotal.ToString("C", new CultureInfo("pt-BR")).ToString(), MensagemDeAlerta.EmailNotaFiscal, notaFiscal.Id.ToString());
+                        _mailService.SendMail(clienteEmail.Email, assunto, corpo, false);
                         var resultadoNotaFiscal = _mapper.Map<NotaFiscalDTO>(notaFiscal);
                         return resultadoNotaFiscal;
                     }
@@ -331,6 +342,10 @@ namespace RetaguardaESilva.Application.PersistenciaService
 
                         pedido.Status = (int)StatusPedido.PedidoCancelado;
                         _geralPersist.Update<Pedido>(pedido);
+                        var clienteEmail = await _clientePersist.GetClienteByIdAsync(notaFiscal.EmpresaId, notaFiscal.ClienteId);
+                        var assunto = MensagemDeAlerta.EmailPedidoExluido;
+                        var corpo = String.Concat("O pedido: ", notaFiscal.PedidoId.ToString(), " e a nota fiscal: ", notaFiscal.Id.ToString(), " formam canceladas com sucesso!");
+                        _mailService.SendMail(clienteEmail.Email, assunto, corpo, false);
                         return await _geralPersist.SaveChangesAsync();
                     }
                     return false;

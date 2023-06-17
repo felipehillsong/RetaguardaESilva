@@ -27,7 +27,7 @@ namespace RetaguardaESilva.Application.DTO
 
     public class PedidoUpdateDTO : PedidoCreateDTO
     {
-
+        public bool EnviarEmailPosFinalizar { get; set; }
     }
 
     public class PedidoRetornoDTO : PedidoDTO

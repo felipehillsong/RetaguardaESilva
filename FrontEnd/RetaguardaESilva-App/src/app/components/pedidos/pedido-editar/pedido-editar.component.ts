@@ -77,6 +77,7 @@ export class PedidoEditarComponent implements OnInit {
   precoTotalPedido:number = 0;
   produtosQuantidadeMaiorVenda:string = "";
   chaveAcesso: string = "";
+  enviarEmailAtualizar: boolean = true;
   constructor(private router: Router, private route: ActivatedRoute, private modalService: BsModalService, public titu: TituloService, private fb: FormBuilder, private fbProduto: FormBuilder, private fbPedido: FormBuilder, private produtoService: ProdutoService, private clienteService: ClienteService, private transportadorService: TransportadorService, private notaFiscalService: NotaFiscalService, private pedidoService: PedidoService, private toastr: ToastrService, private spinner: NgxSpinnerService, public nav: NavService, private _changeDetectorRef: ChangeDetectorRef, private authService: AuthService) { }
 
   ngOnInit() {
@@ -507,6 +508,7 @@ export class PedidoEditarComponent implements OnInit {
         this.preencherPedido(this.produtosGrid);
         this.gerarPedido.id = this.pedidoId;
         this.gerarPedido.status = this.pedido.status;
+        this.gerarPedido.enviarEmailAtualizar = this.enviarEmailAtualizar;
         this.pedidoService.editPedido(this.gerarPedido).subscribe(() => {
           this.router.navigate(['pedidos/lista']);
         },
@@ -533,9 +535,11 @@ export class PedidoEditarComponent implements OnInit {
         var existeCliente = this.VerificaIdCliente(this.clienteId);
         var existeTransportador = this.VerificaIdTransportador(this.transportadorId);
         if(existeCliente && existeTransportador && this.authService.idDoUsuarioLogado() && this.produtosGrid.length != null && this.produtosQuantidadeMaiorVenda.length == 0){
+          this.enviarEmailAtualizar = false;
           this.EditarPedido();
           this.PreencherNotaFiscal();
           this.notaFiscalService.addNotaFiscal(this.notaFiscal).subscribe(() => {
+            this.enviarEmailAtualizar = true;
             this._changeDetectorRef.markForCheck();
             this.router.navigate(['pedidos/lista']);
           },

@@ -196,17 +196,20 @@ namespace RetaguardaESilva.Application.PersistenciaService
                                 await _geralPersist.SaveChangesAsync();
                             }
                         }
-                        List<String> produtosEmails = new List<String>();
-                        foreach (var item in model.Produtos)
+                        if (model.EnviarEmailPosFinalizar)
                         {
-                            decimal valorTotal = item.QuantidadeVenda * item.PrecoVenda;
-                            produtosEmails.Add("\nNome do produto: " + item.Nome + "\nQuantidade de compra: " + item.QuantidadeVenda.ToString() + "\nValor de compra do produto: " + item.PrecoVenda.ToString("C", new CultureInfo("pt-BR")) + "\nValor Total: " + valorTotal.ToString("C", new CultureInfo("pt-BR")));
+                            List<String> produtosEmails = new List<String>();
+                            foreach (var item in model.Produtos)
+                            {
+                                decimal valorTotal = item.QuantidadeVenda * item.PrecoVenda;
+                                produtosEmails.Add("\nNome do produto: " + item.Nome + "\nQuantidade de compra: " + item.QuantidadeVenda.ToString() + "\nValor de compra do produto: " + item.PrecoVenda.ToString("C", new CultureInfo("pt-BR")) + "\nValor Total: " + valorTotal.ToString("C", new CultureInfo("pt-BR")));
+                            }
+                            var produtosEmail = string.Join("\n", produtosEmails);
+                            var clienteEmail = await _clientePersist.GetClienteByIdAsync(model.EmpresaId, model.ClienteId);
+                            var assunto = MensagemDeAlerta.EmailPedidoEmAnalise;
+                            var corpo = String.Concat(MensagemDeAlerta.EmailPedidoEmAnaliseAtualizarCorpo, retornoPedido.Id.ToString() + ".", MensagemDeAlerta.EmailPedidoProdutos, "\n" + produtosEmail, MensagemDeAlerta.EmailPedidoValorTotal, retornoPedido.PrecoTotal.ToString("C", new CultureInfo("pt-BR"))).ToString();
+                            _mailService.SendMail(clienteEmail.Email, assunto, corpo, false);
                         }
-                        var produtosEmail = string.Join("\n", produtosEmails);
-                        var clienteEmail = await _clientePersist.GetClienteByIdAsync(model.EmpresaId, model.ClienteId);
-                        var assunto = MensagemDeAlerta.EmailPedidoEmAnalise;
-                        var corpo = String.Concat(MensagemDeAlerta.EmailPedidoEmAnaliseAtualizarCorpo, retornoPedido.Id.ToString() + ".", MensagemDeAlerta.EmailPedidoProdutos, "\n" + produtosEmail, MensagemDeAlerta.EmailPedidoValorTotal, retornoPedido.PrecoTotal.ToString("C", new CultureInfo("pt-BR"))).ToString();
-                        _mailService.SendMail(clienteEmail.Email, assunto, corpo, false);
                         var retornoPedidoCompleto = _mapper.Map<PedidoUpdateDTO>(retornoPedido);
                         return retornoPedidoCompleto;
                     }
@@ -264,7 +267,14 @@ namespace RetaguardaESilva.Application.PersistenciaService
                             }
                         }
                         _geralPersist.Delete<Pedido>(pedido);
-                        return await _geralPersist.SaveChangesAsync();
+                        if(await _geralPersist.SaveChangesAsync())
+                        {
+                            var clienteEmail = await _clientePersist.GetClienteByIdAsync(pedido.EmpresaId, pedido.ClienteId);
+                            var assunto = MensagemDeAlerta.PedidoCancelado;
+                            var corpo = String.Concat("O pedido " + pedidoId + " foi cancelado com sucesso!");
+                            _mailService.SendMail(clienteEmail.Email, assunto, corpo, false);
+                            return true;
+                        }
                     }
                     return false;
                 }
