@@ -25,19 +25,20 @@ export class NotaFiscalGerarPdfComponent implements OnInit {
   transportador = {} as Transportador;
   produtos: Produto[] = [];
   notaFiscalId!: number;
-
+  notaFiscalEmissaoExiste!: boolean;
   constructor(private notaFiscalService: NotaFiscalService, private route: ActivatedRoute, private router: Router, private authService: AuthService, public nav: NavService,public titu: TituloService, private _changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.permissoesDeTela();
     this.criarPDF();
-    this.gerarPDF();
+    this.gerarPDF(this.notaFiscalEmissaoExiste);
   }
 
   public criarPDF(): void{
     this._changeDetectorRef.markForCheck();
     this.notaFiscalId = this.route.snapshot.params['id'];
-    this.notaFiscalService.GerarPdf(this.notaFiscalId).subscribe(
+    this.notaFiscalEmissaoExiste = Boolean(this.route.snapshot.params['notaFiscalEmissaoExiste']);
+    this.notaFiscalService.GerarPdf(this.notaFiscalId, false).subscribe(
       (_notaFiscal: NotaFiscal) => {
         this.notaFiscal = _notaFiscal;
         this.empresa = this.notaFiscal.empresa;
@@ -50,7 +51,7 @@ export class NotaFiscalGerarPdfComponent implements OnInit {
     this._changeDetectorRef.markForCheck();
   }
 
-  public gerarPDF() {
+  public gerarPDF(notaFiscalEmissaoExiste:boolean) {
     this._changeDetectorRef.markForCheck();
     setTimeout(() => {
       html2canvas(document.body).then(canvas => {
@@ -61,6 +62,12 @@ export class NotaFiscalGerarPdfComponent implements OnInit {
         pdf.addImage(contentDataURL, 'PNG', 0, 0, width, height)
         pdf.save('Nota Fiscal ' + this.notaFiscalId + '.pdf');
       });
+      if(notaFiscalEmissaoExiste == true){
+        if(this.notaFiscalEmissaoExiste == true){
+          this.notaFiscalService.GerarPdf(this.notaFiscalId, this.notaFiscalEmissaoExiste).subscribe(
+            (_notaFiscal: NotaFiscal) => {});
+        }
+      }
       this.Voltar();
     }, 100); // 100 milissegundos de atraso
   }

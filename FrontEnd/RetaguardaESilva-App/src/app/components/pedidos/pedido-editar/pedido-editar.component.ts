@@ -78,6 +78,7 @@ export class PedidoEditarComponent implements OnInit {
   produtosQuantidadeMaiorVenda:string = "";
   chaveAcesso: string = "";
   enviarEmailAtualizar: boolean = true;
+  notaFiscalEmissaoExiste:boolean = false;
   constructor(private router: Router, private route: ActivatedRoute, private modalService: BsModalService, public titu: TituloService, private fb: FormBuilder, private fbProduto: FormBuilder, private fbPedido: FormBuilder, private produtoService: ProdutoService, private clienteService: ClienteService, private transportadorService: TransportadorService, private notaFiscalService: NotaFiscalService, private pedidoService: PedidoService, private toastr: ToastrService, private spinner: NgxSpinnerService, public nav: NavService, private _changeDetectorRef: ChangeDetectorRef, private authService: AuthService) { }
 
   ngOnInit() {
@@ -538,10 +539,11 @@ export class PedidoEditarComponent implements OnInit {
           this.enviarEmailAtualizar = false;
           this.EditarPedido();
           this.PreencherNotaFiscal();
-          this.notaFiscalService.addNotaFiscal(this.notaFiscal).subscribe(() => {
+          this.notaFiscalService.addNotaFiscal(this.notaFiscal).subscribe((response) => {
             this.enviarEmailAtualizar = true;
-            this._changeDetectorRef.markForCheck();
-            this.router.navigate(['pedidos/lista']);
+            this.notaFiscalEmissaoExiste = true;
+            this.router.navigate([`notasFiscais/pdf`, response.id, this.notaFiscalEmissaoExiste]);
+           this._changeDetectorRef.markForCheck();
           },
           (error: any) => {
             console.error(error);

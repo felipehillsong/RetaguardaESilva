@@ -74,11 +74,8 @@ namespace RetaguardaESilva.Application.PersistenciaService
                             produtosNotaEmail.Add(produto);
                             item.Status = (int)StatusPedido.PedidoConfirmado;
                             _geralPersist.Update<Produto>(produto);
-                            await _geralPersist.SaveChangesAsync();
                             _geralPersist.Update<PedidoNota>(item);
-                            await _geralPersist.SaveChangesAsync();
                             _geralPersist.Update<Pedido>(pedido);
-                            await _geralPersist.SaveChangesAsync();
                             _geralPersist.Update<Estoque>(estoque);
                             await _geralPersist.SaveChangesAsync();
                         }
@@ -109,10 +106,6 @@ namespace RetaguardaESilva.Application.PersistenciaService
                     if (await _geralPersist.SaveChangesAsync())
                     {
                         var notaFiscal = await _notaFiscalPersist.GetNotaFiscalByIdAsync(notaFiscalDTO.EmpresaId, notaFiscalDTO.Id);
-                        var clienteEmail = await _clientePersist.GetClienteByIdAsync(model.EmpresaId, model.ClienteId);
-                        var assunto = MensagemDeAlerta.EmailPedidoConfirmado;
-                        var corpo = String.Concat(MensagemDeAlerta.EmailPedidoConfirmadoCorpo, model.PedidoId.ToString() + ".", MensagemDeAlerta.EmailPedidoValorTotal, model.PrecoTotal.ToString("C", new CultureInfo("pt-BR")).ToString(), MensagemDeAlerta.EmailNotaFiscal, notaFiscal.Id.ToString());
-                        _mailService.SendMail(clienteEmail.Email, assunto, corpo, false);
                         var resultadoNotaFiscal = _mapper.Map<NotaFiscalDTO>(notaFiscal);
                         return resultadoNotaFiscal;
                     }
@@ -158,7 +151,7 @@ namespace RetaguardaESilva.Application.PersistenciaService
             }
         }
 
-        public async Task<NotaFiscalIdDTO> GetNotaFiscalByIdAsync(int empresaId, int notaFiscalId)
+        public async Task<NotaFiscalIdDTO> GetNotaFiscalByIdAsync(int empresaId, int notaFiscalId, bool? notaFiscalEmissao)
         {
             try
             {
@@ -268,7 +261,14 @@ namespace RetaguardaESilva.Application.PersistenciaService
                         };
                         notaFiscalRetornoDTO.Produto.Add(produtoDTO);
                     }
-
+                    if (notaFiscalEmissao == true)
+                    {
+                        await Task.Delay(3000);
+                        var clienteEmail = await _clientePersist.GetClienteByIdAsync(notaFiscalRetornoDTO.EmpresaId, notaFiscalRetornoDTO.ClienteId);
+                        var assunto = MensagemDeAlerta.EmailPedidoConfirmado;
+                        var corpo = String.Concat(MensagemDeAlerta.EmailPedidoConfirmadoCorpo, notaFiscalRetornoDTO.PedidoId.ToString() + ".", MensagemDeAlerta.EmailPedidoValorTotal, notaFiscalRetornoDTO.PrecoTotal.ToString("C", new CultureInfo("pt-BR")).ToString(), MensagemDeAlerta.EmailNotaFiscal, notaFiscal.Id.ToString());
+                        _mailService.SendMail(clienteEmail.Email, assunto, corpo, true, notaFiscal.Id, false);
+                    }
                     return notaFiscalRetornoDTO;
                 }
             }
@@ -345,7 +345,7 @@ namespace RetaguardaESilva.Application.PersistenciaService
                         var clienteEmail = await _clientePersist.GetClienteByIdAsync(notaFiscal.EmpresaId, notaFiscal.ClienteId);
                         var assunto = MensagemDeAlerta.EmailPedidoExluido;
                         var corpo = String.Concat("O pedido: ", notaFiscal.PedidoId.ToString(), " e a nota fiscal: ", notaFiscal.Id.ToString(), " formam canceladas com sucesso!");
-                        _mailService.SendMail(clienteEmail.Email, assunto, corpo, false);
+                        _mailService.SendMail(clienteEmail.Email, assunto, corpo, true, notaFiscal.Id, false);
                         return await _geralPersist.SaveChangesAsync();
                     }
                     return false;

@@ -25,6 +25,7 @@ export class NotaFiscalPdfComponent implements OnInit {
   notaFiscalId!: number;
   botaoVolta: boolean = false;
   botaoImprimir: boolean = false;
+  notaFiscalEmissaoExiste: boolean = false;
   constructor(private notaFiscalService: NotaFiscalService, private route: ActivatedRoute, private router: Router, private authService: AuthService, public nav: NavService,public titu: TituloService) { }
 
   ngOnInit() {
@@ -34,8 +35,12 @@ export class NotaFiscalPdfComponent implements OnInit {
 
   public visualizarPDF(): void{
     this.notaFiscalId = this.route.snapshot.params['id'];
-    this.notaFiscalService.GerarPdf(this.notaFiscalId).subscribe(
+    this.notaFiscalEmissaoExiste = Boolean(this.route.snapshot.params['notaFiscalEmissaoExiste']);
+    this.notaFiscalService.GerarPdf(this.notaFiscalId, false).subscribe(
       (_notaFiscal: NotaFiscal) => {
+        if(this.notaFiscalEmissaoExiste == true){
+          this.gerarPDF(this.notaFiscalId);
+        }
         this.notaFiscal = _notaFiscal;
         this.empresa = this.notaFiscal.empresa;
         this.cliente = this.notaFiscal.cliente;
@@ -49,7 +54,7 @@ export class NotaFiscalPdfComponent implements OnInit {
   }
 
   gerarPDF(id: number): void {
-    this.router.navigate([`notasFiscais/gerarPdf/${id}`]);
+    this.router.navigate([`notasFiscais/gerarPdf`, id, this.notaFiscalEmissaoExiste]);
   }
 
   public Voltar(){

@@ -6,6 +6,7 @@ using System.Net.Mail;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using RetaguardaESilva.Persistence.Migrations;
 
 namespace RetaguardaESilva.Application.PersistenciaService
 {
@@ -20,7 +21,7 @@ namespace RetaguardaESilva.Application.PersistenciaService
             mailMessage.To.Add(email);
         }
 
-        public void SendMail(string email, string subject, string body, bool isHtml = false)
+        public void SendMail(string email, string subject, string body, bool anexo, int? notaFiscalId, bool isHtml = false)
         {
             using (MailMessage mailMessage = new MailMessage())
             {
@@ -28,6 +29,11 @@ namespace RetaguardaESilva.Application.PersistenciaService
                 AddEmailsToMailMessage(mailMessage, email);
                 mailMessage.Subject = subject;
                 mailMessage.Body = body;
+                if (anexo)
+                {
+                    Attachment anexar = new Attachment($"C:\\Users\\Felipe\\Downloads\\Nota Fiscal {notaFiscalId}.pdf");
+                    mailMessage.Attachments.Add(anexar);
+                }
                 mailMessage.IsBodyHtml = isHtml;
                 using (SmtpClient smtp = new SmtpClient(smtpAddress, portNumber))
                 {

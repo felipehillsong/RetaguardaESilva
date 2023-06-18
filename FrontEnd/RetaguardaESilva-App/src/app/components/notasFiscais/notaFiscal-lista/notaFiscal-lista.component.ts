@@ -67,12 +67,8 @@ export class NotaFiscalListaComponent implements OnInit {
     );
   }
 
-  visualizarPDF(id: number): void {
-    this.router.navigate([`notasFiscais/pdf/${id}`]);
-  }
-
   gerarPDF(id: number): void {
-    this.router.navigate([`notasFiscais/pdf/${id}`]);
+    this.router.navigate([`notasFiscais/pdf`, id, false]);
   }
 
   openModal(event: any, template: TemplateRef<any>, clienteNome: string, notaFiscalId: number): void {

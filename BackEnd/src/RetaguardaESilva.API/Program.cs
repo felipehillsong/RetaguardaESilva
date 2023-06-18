@@ -48,9 +48,11 @@ builder.Services.AddScoped<ITransportadorPersist, TransportadorPersist>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IUsuarioPersist, UsuarioPersist>();
 builder.Services.AddScoped<IValidacoesPersist, ValidacoesPersist>();
-builder.Services.AddDbContext<RetaguardaESilvaContext>(
-            context => context.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
-            );
+builder.Services.AddDbContext<RetaguardaESilvaContext>(context =>
+{
+    context.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    context.EnableSensitiveDataLogging();
+});
 builder.Services.AddCors(c =>
 {
     c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
