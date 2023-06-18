@@ -64,6 +64,7 @@ export class PedidoListaComponent implements OnInit {
         this.pedidos = _pedidos;
         this.getNotasFiscais();
         this.pedidosFiltrados = this.pedidos;
+        console.log(this.pedidos);
         this._changeDetectorRef.markForCheck();
       },
       error => console.log(error)
@@ -83,8 +84,8 @@ export class PedidoListaComponent implements OnInit {
 
   public preencherNotasFiscais(notasFiscais: NotaFiscal[]){
     for(var i = 0; i < notasFiscais.length; i++){
-      const pedido = this.pedidos.find(pedido => pedido.id === this.notasFiscais[i].pedidoId);
-      if(this.pedidos.find(pedido => pedido.id === pedido?.id)){
+      const pedido = this.pedidos.find(pedido => pedido.id == this.notasFiscais[i].pedidoId);
+      if(this.pedidos.find(pedido => pedido.id == pedido?.id)){
         this.pedidos[i].possuiNotaFiscal = true;
       }
     }

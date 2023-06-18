@@ -1,3 +1,4 @@
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Cliente } from 'src/app/models/cliente';
@@ -35,7 +36,7 @@ export class NotaFiscalPdfComponent implements OnInit {
 
   public visualizarPDF(): void{
     this.notaFiscalId = this.route.snapshot.params['id'];
-    this.notaFiscalEmissaoExiste = Boolean(this.route.snapshot.params['notaFiscalEmissaoExiste']);
+    this.notaFiscalEmissaoExiste = coerceBooleanProperty(this.route.snapshot.paramMap.get('notaFiscalEmissaoExiste'))
     this.notaFiscalService.GerarPdf(this.notaFiscalId, false).subscribe(
       (_notaFiscal: NotaFiscal) => {
         if(this.notaFiscalEmissaoExiste == true){

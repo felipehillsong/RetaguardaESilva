@@ -30,6 +30,7 @@ export class NotaFiscalListaComponent implements OnInit {
   fornecedorNome!: string;
   notaFiscalId!: number;
   clienteNome!:string;
+  notaFiscalEmissaoExiste:boolean = false;
   visualizarGerarPDF!: boolean;
   visualizarCancelar!: boolean;
   notaFiscalAprovada: number = statusNotaFiscal.NotaFiscalAprovada;
@@ -68,7 +69,7 @@ export class NotaFiscalListaComponent implements OnInit {
   }
 
   gerarPDF(id: number): void {
-    this.router.navigate([`notasFiscais/pdf`, id, false]);
+    this.router.navigate([`notasFiscais/pdf`, id, this.notaFiscalEmissaoExiste]);
   }
 
   openModal(event: any, template: TemplateRef<any>, clienteNome: string, notaFiscalId: number): void {
