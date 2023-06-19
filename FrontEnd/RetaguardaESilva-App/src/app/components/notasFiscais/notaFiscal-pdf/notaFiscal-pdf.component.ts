@@ -10,6 +10,7 @@ import { AuthService } from 'src/app/services/login/auth.service';
 import { NavService } from 'src/app/services/nav/nav.service';
 import { NotaFiscalService } from 'src/app/services/notaFiscal/notaFiscal.service';
 import { TituloService } from 'src/app/services/titulo/titulo.service';
+import { ScrollToService } from '@nicky-lenaers/ngx-scroll-to';
 
 @Component({
   selector: 'app-notaFiscal-pdf',
@@ -27,19 +28,22 @@ export class NotaFiscalPdfComponent implements OnInit {
   botaoVolta: boolean = false;
   botaoImprimir: boolean = false;
   notaFiscalEmissaoExiste: boolean = false;
+  exclusao: boolean = false;
   constructor(private notaFiscalService: NotaFiscalService, private route: ActivatedRoute, private router: Router, private authService: AuthService, public nav: NavService,public titu: TituloService) { }
 
   ngOnInit() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     this.permissoesDeTela();
     this.visualizarPDF();
   }
 
   public visualizarPDF(): void{
     this.notaFiscalId = this.route.snapshot.params['id'];
-    this.notaFiscalEmissaoExiste = coerceBooleanProperty(this.route.snapshot.paramMap.get('notaFiscalEmissaoExiste'))
-    this.notaFiscalService.GerarPdf(this.notaFiscalId, false).subscribe(
+    this.notaFiscalEmissaoExiste = coerceBooleanProperty(this.route.snapshot.paramMap.get('notaFiscalEmissaoExiste'));
+    this.exclusao = coerceBooleanProperty(this.route.snapshot.paramMap.get('exclusao'));
+    this.notaFiscalService.GerarPdf(this.notaFiscalId, false, false).subscribe(
       (_notaFiscal: NotaFiscal) => {
-        if(this.notaFiscalEmissaoExiste == true){
+        if(this.notaFiscalEmissaoExiste == true || this.exclusao == true){
           this.gerarPDF(this.notaFiscalId);
         }
         this.notaFiscal = _notaFiscal;
@@ -55,7 +59,7 @@ export class NotaFiscalPdfComponent implements OnInit {
   }
 
   gerarPDF(id: number): void {
-    this.router.navigate([`notasFiscais/gerarPdf`, id, this.notaFiscalEmissaoExiste]);
+    this.router.navigate([`notasFiscais/gerarPdf`, id, this.notaFiscalEmissaoExiste, this.exclusao]);
   }
 
   public Voltar(){

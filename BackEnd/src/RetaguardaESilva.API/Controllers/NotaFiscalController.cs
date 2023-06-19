@@ -65,11 +65,11 @@ namespace RetaguardaESilva.Controllers
 
         // GET: api/NotaFiscal/5
         [HttpGet("api/[controller]/{id}")]
-        public async Task<ActionResult> GetNotaFiscalId(int empresaId, int id, bool? notaFiscalEmissao)
+        public async Task<ActionResult> GetNotaFiscalId(int empresaId, int id, bool? notaFiscalEmissao, bool? exclusao)
         {  
             try
             {
-                var notaFiscal = await _notaFiscalService.GetNotaFiscalByIdAsync(empresaId, id, notaFiscalEmissao);
+                var notaFiscal = await _notaFiscalService.GetNotaFiscalByIdAsync(empresaId, id, notaFiscalEmissao, exclusao);
                 if (notaFiscal == null)
                 {
                     return NotFound();
@@ -107,13 +107,14 @@ namespace RetaguardaESilva.Controllers
         {
             try
             {
-                if (await _notaFiscalService.CancelarNotaFiscal(empresaId, id))
+                var notaFiscal = await _notaFiscalService.CancelarNotaFiscal(empresaId, id);
+                if(notaFiscal == null)
                 {
-                    return Ok(new { message = MensagemDeSucesso.NotaFiscalCancelada });
+                    return BadRequest();
                 }
                 else
                 {
-                    return BadRequest();
+                    return Ok(new { message = MensagemDeSucesso.NotaFiscalCancelada, notaFiscal });
                 }
             }
             catch (Exception ex)

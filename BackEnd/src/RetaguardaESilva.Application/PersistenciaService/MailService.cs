@@ -21,7 +21,7 @@ namespace RetaguardaESilva.Application.PersistenciaService
             mailMessage.To.Add(email);
         }
 
-        public void SendMail(string email, string subject, string body, bool anexo, int? notaFiscalId, bool isHtml = false)
+        public void SendMail(string email, string subject, string body, bool anexo, int? notaFiscalId, bool? exclusao, bool isHtml = false)
         {
             using (MailMessage mailMessage = new MailMessage())
             {
@@ -29,9 +29,14 @@ namespace RetaguardaESilva.Application.PersistenciaService
                 AddEmailsToMailMessage(mailMessage, email);
                 mailMessage.Subject = subject;
                 mailMessage.Body = body;
-                if (anexo)
+                if (anexo == true && exclusao == false)
                 {
-                    Attachment anexar = new Attachment($"C:\\Users\\Felipe\\Downloads\\Nota Fiscal {notaFiscalId}.pdf");
+                    Attachment anexar = new Attachment($"C:\\Users\\Felipe Silva\\Downloads\\Nota Fiscal {notaFiscalId}.pdf");
+                    mailMessage.Attachments.Add(anexar);
+                }
+                else if (anexo == true && exclusao == true)
+                {
+                    Attachment anexar = new Attachment($"C:\\Users\\Felipe Silva\\Downloads\\Nota Fiscal {notaFiscalId} cancelada.pdf");
                     mailMessage.Attachments.Add(anexar);
                 }
                 mailMessage.IsBodyHtml = isHtml;

@@ -100,7 +100,7 @@ namespace RetaguardaESilva.Application.PersistenciaService
                         var clienteEmail = await _clientePersist.GetClienteByIdAsync(model.EmpresaId, model.ClienteId);
                         var assunto = MensagemDeAlerta.EmailPedidoEmAnalise;
                         var corpo = String.Concat(MensagemDeAlerta.EmailPedidoEmAnaliseCorpo, retornoPedido.Id.ToString() + ".", MensagemDeAlerta.EmailPedidoProdutos, "\n"+produtosEmail, MensagemDeAlerta.EmailPedidoValorTotal, retornoPedido.PrecoTotal.ToString("C", new CultureInfo("pt-BR"))).ToString();
-                        _mailService.SendMail(clienteEmail.Email, assunto, corpo, false, null, false);
+                        _mailService.SendMail(clienteEmail.Email, assunto, corpo, false, null, false, false);
                         var retornoPedidoCompleto = _mapper.Map<PedidoCreateDTO>(retornoPedido);
                         return retornoPedidoCompleto;
                     }
@@ -208,7 +208,7 @@ namespace RetaguardaESilva.Application.PersistenciaService
                             var clienteEmail = await _clientePersist.GetClienteByIdAsync(model.EmpresaId, model.ClienteId);
                             var assunto = MensagemDeAlerta.EmailPedidoEmAnalise;
                             var corpo = String.Concat(MensagemDeAlerta.EmailPedidoEmAnaliseAtualizarCorpo, retornoPedido.Id.ToString() + ".", MensagemDeAlerta.EmailPedidoProdutos, "\n" + produtosEmail, MensagemDeAlerta.EmailPedidoValorTotal, retornoPedido.PrecoTotal.ToString("C", new CultureInfo("pt-BR"))).ToString();
-                            _mailService.SendMail(clienteEmail.Email, assunto, corpo, false, null, false);
+                            _mailService.SendMail(clienteEmail.Email, assunto, corpo, false, null, false, false);
                         }
                         var retornoPedidoCompleto = _mapper.Map<PedidoUpdateDTO>(retornoPedido);
                         return retornoPedidoCompleto;

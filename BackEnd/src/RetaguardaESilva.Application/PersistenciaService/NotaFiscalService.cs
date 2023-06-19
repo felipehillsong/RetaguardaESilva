@@ -151,7 +151,7 @@ namespace RetaguardaESilva.Application.PersistenciaService
             }
         }
 
-        public async Task<NotaFiscalIdDTO> GetNotaFiscalByIdAsync(int empresaId, int notaFiscalId, bool? notaFiscalEmissao)
+        public async Task<NotaFiscalIdDTO> GetNotaFiscalByIdAsync(int empresaId, int notaFiscalId, bool? notaFiscalEmissao, bool? exclusao)
         {
             try
             {
@@ -261,13 +261,20 @@ namespace RetaguardaESilva.Application.PersistenciaService
                         };
                         notaFiscalRetornoDTO.Produto.Add(produtoDTO);
                     }
-                    if (notaFiscalEmissao == true)
+                    if (notaFiscalEmissao == true && exclusao == false)
                     {
                         await Task.Delay(3000);
                         var clienteEmail = await _clientePersist.GetClienteByIdAsync(notaFiscalRetornoDTO.EmpresaId, notaFiscalRetornoDTO.ClienteId);
                         var assunto = MensagemDeAlerta.EmailPedidoConfirmado;
                         var corpo = String.Concat(MensagemDeAlerta.EmailPedidoConfirmadoCorpo, notaFiscalRetornoDTO.PedidoId.ToString() + ".", MensagemDeAlerta.EmailPedidoValorTotal, notaFiscalRetornoDTO.PrecoTotal.ToString("C", new CultureInfo("pt-BR")).ToString(), MensagemDeAlerta.EmailNotaFiscal, notaFiscal.Id.ToString());
-                        _mailService.SendMail(clienteEmail.Email, assunto, corpo, true, notaFiscal.Id, false);
+                        _mailService.SendMail(clienteEmail.Email, assunto, corpo, true, notaFiscal.Id, false, false);
+                    }else if (notaFiscalEmissao == true && exclusao == true)
+                    {
+                        await Task.Delay(3000);
+                        var clienteEmail = await _clientePersist.GetClienteByIdAsync(notaFiscalRetornoDTO.EmpresaId, notaFiscalRetornoDTO.ClienteId);
+                        var assunto = MensagemDeAlerta.EmailPedidoExluido;
+                        var corpo = String.Concat(MensagemDeAlerta.EmailNotaFiscalExluido, notaFiscalRetornoDTO.PedidoId.ToString());
+                        _mailService.SendMail(clienteEmail.Email, assunto, corpo, true, notaFiscal.Id, exclusao, false);
                     }
                     return notaFiscalRetornoDTO;
                 }
@@ -299,12 +306,12 @@ namespace RetaguardaESilva.Application.PersistenciaService
             }
         }
 
-        public async Task<bool> CancelarNotaFiscal(int empresaId, int notaFiscalId)
+        public async Task<NotaFiscalDTO> CancelarNotaFiscal(int empresaId, int notaFiscalId)
         {
             try
             {
                 var notaFiscal = await _notaFiscalPersist.GetNotaFiscalByIdAsync(empresaId, notaFiscalId);
-                var pedido = await _pedidoPersist.GetPedidoByIdAsync(notaFiscal.EmpresaId, notaFiscal.PedidoId);                
+                var pedido = await _pedidoPersist.GetPedidoByIdAsync(notaFiscal.EmpresaId, notaFiscal.PedidoId);
                 if (notaFiscal == null || pedido == null)
                 {
                     throw new Exception(MensagemDeErro.NotaFiscalNaoEncontradaDelete);
@@ -342,13 +349,11 @@ namespace RetaguardaESilva.Application.PersistenciaService
 
                         pedido.Status = (int)StatusPedido.PedidoCancelado;
                         _geralPersist.Update<Pedido>(pedido);
-                        var clienteEmail = await _clientePersist.GetClienteByIdAsync(notaFiscal.EmpresaId, notaFiscal.ClienteId);
-                        var assunto = MensagemDeAlerta.EmailPedidoExluido;
-                        var corpo = String.Concat("O pedido: ", notaFiscal.PedidoId.ToString(), " e a nota fiscal: ", notaFiscal.Id.ToString(), " formam canceladas com sucesso!");
-                        _mailService.SendMail(clienteEmail.Email, assunto, corpo, true, notaFiscal.Id, false);
-                        return await _geralPersist.SaveChangesAsync();
+                        await _geralPersist.SaveChangesAsync();
+                        var resultadoNotaFiscal = _mapper.Map<NotaFiscalDTO>(notaFiscal);
+                        return resultadoNotaFiscal;
                     }
-                    return false;
+                    return null;
                 }
             }
             catch (Exception ex)

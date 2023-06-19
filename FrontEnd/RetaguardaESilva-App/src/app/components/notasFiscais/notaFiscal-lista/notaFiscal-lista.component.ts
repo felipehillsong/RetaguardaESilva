@@ -35,6 +35,7 @@ export class NotaFiscalListaComponent implements OnInit {
   visualizarCancelar!: boolean;
   notaFiscalAprovada: number = statusNotaFiscal.NotaFiscalAprovada;
   notaFiscalCancelada: number = statusNotaFiscal.NotaFiscalCancelada;
+  exclusao: boolean = false;
 
   public get notaFiscalLista():string{
     return this._notaFiscalListada;
@@ -69,7 +70,7 @@ export class NotaFiscalListaComponent implements OnInit {
   }
 
   gerarPDF(id: number): void {
-    this.router.navigate([`notasFiscais/pdf`, id, this.notaFiscalEmissaoExiste]);
+    this.router.navigate([`notasFiscais/pdf`, id, false, false]);
   }
 
   openModal(event: any, template: TemplateRef<any>, clienteNome: string, notaFiscalId: number): void {
@@ -84,10 +85,11 @@ export class NotaFiscalListaComponent implements OnInit {
     this.spinner.show();
     this.notaFiscalService.cancelar(this.notaFiscalId).subscribe(
       (result: any) =>{
-        console.log(result.message);
-          this.toastr.success(result.message);
-          this.spinner.hide();
-          this.getNotasFiscais();
+          this.notaFiscalEmissaoExiste = true;
+          this.exclusao = true;
+          this.router.navigate([`notasFiscais/pdf`, result.notaFiscal.id, this.notaFiscalEmissaoExiste, this.exclusao]);
+          this.notaFiscalEmissaoExiste = false;
+          this.exclusao = false;
           this._changeDetectorRef.markForCheck();
       },
       (error: any) =>{

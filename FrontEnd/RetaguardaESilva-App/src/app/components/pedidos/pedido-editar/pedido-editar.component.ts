@@ -65,7 +65,7 @@ export class PedidoEditarComponent implements OnInit {
   produtoIdGrid!: number;
   usuarioId!:number;
   produtoNome!:string;
-  inputCliente:boolean = false;
+  inputCliente:boolean = true;
   inputTransportador:boolean = false;
   mostrarProduto:boolean = false;
   mostrarGrid:boolean = false;
@@ -374,7 +374,6 @@ export class PedidoEditarComponent implements OnInit {
       for (let i = 0; i < this.clientes.length; i++) {
         if (this.clientes[i].nome === this.gerarPedido.clienteNome && this.clientes[i].id === this.clienteId) {
           this.mostrarProduto = true;
-          this.inputCliente = true;
           this.inputTransportador = true;
           this.mostrarGrid = true;
           this.mostrarProduto = true;
@@ -396,7 +395,6 @@ export class PedidoEditarComponent implements OnInit {
     for (let i = 0; i < this.clientes.length; i++) {
       if (this.transportadores[i].nome === this.gerarPedido.transportadorNome && this.transportadores[i].id === this.transportadorId) {
         this.mostrarProduto = true;
-        this.inputCliente = true;
         this.inputTransportador = true;
         break;
       }else{
@@ -542,7 +540,7 @@ export class PedidoEditarComponent implements OnInit {
           this.notaFiscalService.addNotaFiscal(this.notaFiscal).subscribe((response) => {
             this.enviarEmailAtualizar = true;
             this.notaFiscalEmissaoExiste = true;
-            this.router.navigate([`notasFiscais/pdf`, response.id, this.notaFiscalEmissaoExiste]);
+            this.router.navigate([`notasFiscais/pdf`, response.id, this.notaFiscalEmissaoExiste, false]);
            this._changeDetectorRef.markForCheck();
           },
           (error: any) => {

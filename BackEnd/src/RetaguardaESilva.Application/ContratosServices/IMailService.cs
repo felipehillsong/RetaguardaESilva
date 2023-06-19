@@ -8,6 +8,6 @@ namespace RetaguardaESilva.Application.ContratosServices
 {
     public interface IMailService
     {
-        void SendMail(string emails, string subject, string body, bool anexo, int? notaFiscalId, bool isHtml = false);
+        void SendMail(string emails, string subject, string body, bool anexo, int? notaFiscalId, bool? exclusao, bool isHtml = false);
     }
 }

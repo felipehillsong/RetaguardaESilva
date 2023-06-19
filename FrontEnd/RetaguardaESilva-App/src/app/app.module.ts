@@ -122,6 +122,8 @@ import { MatTableModule } from '@angular/material/table';
 import { NotaFiscalGerarPdfComponent } from './components/notasFiscais/notaFiscal-gerarPdf/notaFiscal-gerarPdf.component';
 import { RelatorioComponent } from './components/relatorios/relatorio.component';
 import { GerarRelatorioComponent } from './components/relatorios/gerarRelatorio/gerarRelatorio.component';
+import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
+import { BlockUIModule } from 'ng-block-ui';
 
 registerLocaleData(ptBr);
 @NgModule({
@@ -207,6 +209,8 @@ registerLocaleData(ptBr);
     ReactiveFormsModule,
     Select2Module,
     MatAutocompleteModule,
+    BlockUIModule,
+    ScrollToModule.forRoot(),
     ModalModule.forRoot(),
     NgxMaskModule.forRoot(),
     NgxMaskModule.forChild(),

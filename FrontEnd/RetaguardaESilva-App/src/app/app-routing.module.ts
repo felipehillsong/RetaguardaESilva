@@ -190,8 +190,8 @@ const routes: Routes = [
   component: NotaFiscalComponent, canActivate:[AuthGuardsService, AuthGuardsNotaFiscalService],
   children:[
     {path: 'lista', title: 'NotaFiscal', component: NotaFiscalListaComponent },
-    {path: 'pdf/:id/:notaFiscalEmissaoExiste', title: 'Visualizar DANFE', component: NotaFiscalPdfComponent, canActivate: [AuthGuardsNotaFiscalPdfService] },
-    {path: 'gerarPdf/:id/:notaFiscalEmissaoExiste', title: 'Gerar DANFE', component: NotaFiscalGerarPdfComponent, canActivate: [AuthGuardsNotaFiscalPdfService] }
+    {path: 'pdf/:id/:notaFiscalEmissaoExiste/:exclusao', title: 'Visualizar DANFE', component: NotaFiscalPdfComponent, canActivate: [AuthGuardsNotaFiscalPdfService] },
+    {path: 'gerarPdf/:id/:notaFiscalEmissaoExiste/:exclusao', title: 'Gerar DANFE', component: NotaFiscalGerarPdfComponent, canActivate: [AuthGuardsNotaFiscalPdfService] }
   ]},
   { path: 'relatorios',
   component: RelatorioComponent, canActivate:[AuthGuardsService, AuthGuardsRelatorioService],

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { jsPDF } from "jspdf";
 import html2canvas from 'html2canvas';
@@ -11,6 +11,7 @@ import { AuthService } from 'src/app/services/login/auth.service';
 import { NavService } from 'src/app/services/nav/nav.service';
 import { NotaFiscalService } from 'src/app/services/notaFiscal/notaFiscal.service';
 import { TituloService } from 'src/app/services/titulo/titulo.service';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 @Component({
   selector: 'app-notaFiscal-gerarPdf',
@@ -26,6 +27,7 @@ export class NotaFiscalGerarPdfComponent implements OnInit {
   produtos: Produto[] = [];
   notaFiscalId!: number;
   notaFiscalEmissaoExiste!: boolean;
+  exclusao: boolean = false;
   constructor(private notaFiscalService: NotaFiscalService, private route: ActivatedRoute, private router: Router, private authService: AuthService, public nav: NavService,public titu: TituloService, private _changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit() {
@@ -37,8 +39,9 @@ export class NotaFiscalGerarPdfComponent implements OnInit {
   public criarPDF(): void{
     this._changeDetectorRef.markForCheck();
     this.notaFiscalId = this.route.snapshot.params['id'];
-    this.notaFiscalEmissaoExiste = Boolean(this.route.snapshot.params['notaFiscalEmissaoExiste']);
-    this.notaFiscalService.GerarPdf(this.notaFiscalId, false).subscribe(
+    this.notaFiscalEmissaoExiste = coerceBooleanProperty(this.route.snapshot.paramMap.get('notaFiscalEmissaoExiste'));
+    this.exclusao = coerceBooleanProperty(this.route.snapshot.paramMap.get('exclusao'));
+    this.notaFiscalService.GerarPdf(this.notaFiscalId, false, false).subscribe(
       (_notaFiscal: NotaFiscal) => {
         this.notaFiscal = _notaFiscal;
         this.empresa = this.notaFiscal.empresa;
@@ -60,18 +63,22 @@ export class NotaFiscalGerarPdfComponent implements OnInit {
         var width = pdf.internal.pageSize.getWidth();
         var height = canvas.height * width / canvas.width;
         pdf.addImage(contentDataURL, 'PNG', 0, 0, width, height)
-        pdf.save('Nota Fiscal ' + this.notaFiscalId + '.pdf');
+        if(this.notaFiscalEmissaoExiste == true && this.exclusao == true){
+          pdf.save('Nota Fiscal ' + this.notaFiscalId + ' cancelada' +'.pdf');
+        }else{
+          pdf.save('Nota Fiscal ' + this.notaFiscalId + '.pdf');
+        }
       });
       if(notaFiscalEmissaoExiste == true){
-        if(this.notaFiscalEmissaoExiste == true){
-          this.notaFiscalService.GerarPdf(this.notaFiscalId, this.notaFiscalEmissaoExiste).subscribe(
+        if(this.notaFiscalEmissaoExiste == true || this.exclusao == true){
+          this.notaFiscalService.GerarPdf(this.notaFiscalId, this.notaFiscalEmissaoExiste, this.exclusao).subscribe(
             (_notaFiscal: NotaFiscal) => {});
         }
       }
       this.Voltar();
-    }, 100); // 100 milissegundos de atraso
+    }, 1000);
+     // 100 milissegundos de atraso
   }
-
 
   public Voltar(){
     this.router.navigate(['notasFiscais/lista']);

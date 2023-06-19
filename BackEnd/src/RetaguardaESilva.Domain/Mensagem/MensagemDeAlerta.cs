@@ -18,6 +18,7 @@ namespace RetaguardaESilva.Domain.Mensagem
         public const string ClienteExcluido = "Cliente excluído";
         public const string EmailPedidoEmAnalise = "Pedido em análise";
         public const string EmailPedidoExluido = "Pedido cancelado com sucesso!";
+        public const string EmailNotaFiscalExluido = "Pedido cancelado com sucesso, a sua nota fiscal é: ";
         public const string EmailPedidoConfirmado = "Pedido confirmado com sucesso!";
         public const string EmailPedidoEmAnaliseCorpo = "Seu pedido encontra-se pendente de autorização de venda. O numero do pedido é: ";
         public const string EmailPedidoEmAnaliseAtualizarCorpo = "Os produtos do seu pedido foram atualizado e pendente de autorização de venda. O numero do pedido é: ";
