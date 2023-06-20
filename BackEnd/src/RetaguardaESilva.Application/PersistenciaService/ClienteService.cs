@@ -44,15 +44,20 @@ namespace RetaguardaESilva.Application.PersistenciaService
                     model.StatusExclusao = Convert.ToBoolean(Situacao.Inativo);
                     model.Ativo = Convert.ToBoolean(Situacao.Ativo);
                     var clienteCreateDTO = _mapper.Map<Cliente>(model);
+                    clienteCreateDTO.Endereco = model.Logradouro;
+                    clienteCreateDTO.Municipio = model.Localidade;
                     clienteCreateDTO.Nome = _validacoesPersist.AcertarNome(clienteCreateDTO.Nome);
                     _geralPersist.Add<Cliente>(clienteCreateDTO);
                     if (await _geralPersist.SaveChangesAsync())
                     {
                         var retornoCliente = await _clientePersist.GetClienteByIdAsync(clienteCreateDTO.EmpresaId, clienteCreateDTO.Id);
-                        return _mapper.Map<ClienteCreateDTO>(retornoCliente);
+                        var resultadoCliente = _mapper.Map<ClienteCreateDTO>(retornoCliente);
+                        resultadoCliente.Logradouro = retornoCliente.Endereco;
+                        resultadoCliente.Localidade = retornoCliente.Municipio;
+                        return resultadoCliente;
                     }
                     throw new Exception(mensagem);
-                }                
+                }
             }
             catch (Exception ex)
             {
@@ -79,12 +84,17 @@ namespace RetaguardaESilva.Application.PersistenciaService
                     {
                         model.StatusExclusao = Convert.ToBoolean(Situacao.Inativo);
                         var clienteUpdateDTO = _mapper.Map<Cliente>(model);
+                        clienteUpdateDTO.Endereco = model.Logradouro;
+                        clienteUpdateDTO.Municipio = model.Localidade;
                         clienteUpdateDTO.Nome = _validacoesPersist.AcertarNome(clienteUpdateDTO.Nome);
                         _geralPersist.Update(clienteUpdateDTO);
                         if (await _geralPersist.SaveChangesAsync())
                         {
                             var retornoCliente = await _clientePersist.GetClienteByIdAsync(clienteUpdateDTO.EmpresaId, clienteUpdateDTO.Id);
-                            return _mapper.Map<ClienteUpdateDTO>(retornoCliente);
+                            var resultadoCliente = _mapper.Map<ClienteUpdateDTO>(retornoCliente);
+                            resultadoCliente.Logradouro = retornoCliente.Endereco;
+                            resultadoCliente.Localidade = retornoCliente.Municipio;
+                            return resultadoCliente;
                         }
                         throw new Exception(MensagemDeErro.ErroAoAtualizar);
                     }   
@@ -150,12 +160,14 @@ namespace RetaguardaESilva.Application.PersistenciaService
             {
                 var cliente = await _clientePersist.GetClienteByIdAsync(empresaId, clienteId);
                 if (cliente == null)
-                {                    
+                {
                     throw new Exception(MensagemDeErro.ClienteNaoEncontrado);
                 }
                 else
                 {
                     var resultadoCliente = _mapper.Map<ClienteDTO>(cliente);
+                    resultadoCliente.Logradouro = cliente.Endereco;
+                    resultadoCliente.Localidade = cliente.Municipio;
                     return resultadoCliente;
                 }
             }

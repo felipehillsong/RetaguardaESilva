@@ -1,10 +1,10 @@
 export interface Cliente {
   id: number;
   nome: string;
-  endereco: string;
+  logradouro: string;
   bairro: string;
   numero: string;
-  municipio: string;
+  localidade: string;
   uf: string;
   pais: string;
   cep: string;

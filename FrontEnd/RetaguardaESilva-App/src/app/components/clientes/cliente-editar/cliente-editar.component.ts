@@ -12,6 +12,7 @@ import { NavService } from 'src/app/services/nav/nav.service';
 import * as moment from 'moment';
 import { Titulos } from 'src/app/enums/titulos';
 import { TituloService } from 'src/app/services/titulo/titulo.service';
+import { BuscarCepService } from 'src/app/services/buscarCep/buscarCep.service';
 
 @Component({
   selector: 'app-cliente-editar',
@@ -33,7 +34,7 @@ export class ClienteEditarComponent implements OnInit {
   valueError!:string;
   ativo!:string;
 
-  constructor(private fb: FormBuilder, public titu: TituloService, private _changeDetectorRef: ChangeDetectorRef, private toastr: ToastrService, private spinner: NgxSpinnerService, public nav: NavService, private clienteService: ClienteService, private authService: AuthService, private router: Router, private route: ActivatedRoute) { }
+  constructor(private fb: FormBuilder, public titu: TituloService, private _changeDetectorRef: ChangeDetectorRef, private toastr: ToastrService, private spinner: NgxSpinnerService, public nav: NavService, private clienteService: ClienteService, private authService: AuthService, private router: Router, private route: ActivatedRoute, private buscarCep: BuscarCepService) { }
 
   ngOnInit() {
     this.permissoesDeTela();
@@ -115,9 +116,9 @@ export class ClienteEditarComponent implements OnInit {
           Validators.maxLength(50),
         ],
       ],
-      endereco: [null, Validators.required],
+      logradouro: [null, Validators.required],
       bairro: [null, Validators.required],
-      municipio: [null, Validators.required],
+      localidade: [null, Validators.required],
       numero: [null, Validators.required],
       cep: [null, Validators.required],
       complemento: [null],
@@ -146,9 +147,10 @@ export class ClienteEditarComponent implements OnInit {
   }
 
   EnviarCep(cepView: string): void {
-    this.clienteService.getCep(cepView).subscribe(
+    this.buscarCep.buscarCep(cepView).subscribe(
       (_cepBD: any) => {
         this.cepBD = _cepBD;
+        console.log(_cepBD);
         Object.entries(this.cepBD).forEach(([key, value]) => {
           this.form.get(key.toLowerCase())?.setValue(value);
           this.form.get('pais')?.setValue('Brasil');

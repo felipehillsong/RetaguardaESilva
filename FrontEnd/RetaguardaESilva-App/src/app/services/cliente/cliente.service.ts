@@ -36,8 +36,4 @@ public delete(id : number) : Observable<any>{
   return this.http.delete<string>(`${this.baseURLGetUpdateDelete}/${id}?empresaId=${this.authService.empresaId()}`).pipe(take(1));
 }
 
-public getCep(cep: string){
-  return this.http.get(`${this.baseCepURL}cep=${cep}`).pipe(take(1));
-}
-
 }
