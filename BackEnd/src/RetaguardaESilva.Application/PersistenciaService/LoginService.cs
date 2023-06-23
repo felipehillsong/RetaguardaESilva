@@ -83,10 +83,10 @@ namespace RetaguardaESilva.Application.PersistenciaService
                 {
                     Id = funcionarioView.Id,
                     Nome = nome,
-                    Endereco = funcionarioView.Endereco,
+                    Endereco = funcionarioView.Logradouro,
                     Bairro = funcionarioView.Bairro,
                     Numero = funcionarioView.Numero,
-                    Municipio = funcionarioView.Municipio,
+                    Municipio = funcionarioView.Localidade,
                     UF = funcionarioView.UF,
                     Pais = funcionarioView.Pais,
                     CEP = funcionarioView.CEP,

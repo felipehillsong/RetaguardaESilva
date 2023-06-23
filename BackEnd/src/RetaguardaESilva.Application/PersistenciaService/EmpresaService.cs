@@ -43,12 +43,17 @@ namespace RetaguardaESilva.Application.PersistenciaService
                     model.StatusExclusao = Convert.ToBoolean(Situacao.Inativo);
                     model.Ativo = Convert.ToBoolean(Situacao.Ativo);
                     var empresaCreateDTO = _mapper.Map<Empresa>(model);
+                    empresaCreateDTO.Endereco = model.Logradouro;
+                    empresaCreateDTO.Municipio = model.Localidade;
                     empresaCreateDTO.Nome = _validacoesPersist.AcertarNome(empresaCreateDTO.Nome);
                     _geralPersist.Add<Empresa>(empresaCreateDTO);
                     if (await _geralPersist.SaveChangesAsync())
                     {
                         var retornoEmpresa = await _empresaPersist.GetEmpresaByIdAsync(empresaCreateDTO.Id);
-                        return _mapper.Map<EmpresaCreateDTO>(retornoEmpresa);
+                        var resultadoEmpresa = _mapper.Map<EmpresaCreateDTO>(retornoEmpresa);
+                        resultadoEmpresa.Logradouro = retornoEmpresa.Endereco;
+                        resultadoEmpresa.Localidade = retornoEmpresa.Municipio;
+                        return resultadoEmpresa;
                     }                    
                     throw new Exception(MensagemDeErro.ErroSalvarEmpresa);
                 }                
@@ -78,12 +83,17 @@ namespace RetaguardaESilva.Application.PersistenciaService
                     {
                         model.StatusExclusao = Convert.ToBoolean(Situacao.Inativo);
                         var empresaUpdateDTO = _mapper.Map<Empresa>(model);
+                        empresaUpdateDTO.Endereco = model.Logradouro;
+                        empresaUpdateDTO.Municipio = model.Localidade;
                         empresaUpdateDTO.Nome = _validacoesPersist.AcertarNome(empresaUpdateDTO.Nome);
                         _geralPersist.Update(empresaUpdateDTO);
                         if (await _geralPersist.SaveChangesAsync())
                         {
                             var retornoEmpresa = await _empresaPersist.GetEmpresaByIdAsync(empresaUpdateDTO.Id);
-                            return _mapper.Map<EmpresaUpdateDTO>(retornoEmpresa);
+                            var resultadoEmpresa = _mapper.Map<EmpresaUpdateDTO>(retornoEmpresa);
+                            resultadoEmpresa.Logradouro = retornoEmpresa.Endereco;
+                            resultadoEmpresa.Localidade = retornoEmpresa.Municipio;
+                            return resultadoEmpresa;
                         }
                         throw new Exception(MensagemDeErro.ErroAtualizarEmpresa);
                     }   
@@ -151,6 +161,8 @@ namespace RetaguardaESilva.Application.PersistenciaService
                 else
                 {
                     var resultadoEmpresa = _mapper.Map<EmpresaDTO>(empresa);
+                    resultadoEmpresa.Logradouro = empresa.Endereco;
+                    resultadoEmpresa.Localidade = empresa.Municipio;
                     return resultadoEmpresa;
                 }
 

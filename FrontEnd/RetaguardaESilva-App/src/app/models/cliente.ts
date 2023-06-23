@@ -2,9 +2,9 @@ export interface Cliente {
   id: number;
   nome: string;
   logradouro: string;
+  localidade: string;
   bairro: string;
   numero: string;
-  localidade: string;
   uf: string;
   pais: string;
   cep: string;

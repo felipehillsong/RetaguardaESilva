@@ -1,10 +1,10 @@
 export interface Empresa {
   id: number;
   nome: string;
-  endereco: string;
+  logradouro: string;
+  localidade: string;
   bairro: string;
   numero: string;
-  municipio: string;
   uf: string;
   pais: string;
   cep: string;

@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Titulos } from 'src/app/enums/titulos';
 import { Cep } from 'src/app/models/cep';
 import { Transportador } from 'src/app/models/transportador';
+import { BuscarCepService } from 'src/app/services/buscarCep/buscarCep.service';
 import { AuthService } from 'src/app/services/login/auth.service';
 import { NavService } from 'src/app/services/nav/nav.service';
 import { TituloService } from 'src/app/services/titulo/titulo.service';
@@ -32,7 +33,7 @@ export class TransportadorEditarComponent implements OnInit {
   valueError!:string;
   ativo!:string;
 
-  constructor(private router: Router, private route: ActivatedRoute, public titu: TituloService, private fb: FormBuilder, private transportadorService: TransportadorService, private toastr: ToastrService, private spinner: NgxSpinnerService, public nav: NavService, private _changeDetectorRef: ChangeDetectorRef, private authService: AuthService) { }
+  constructor(private router: Router, private route: ActivatedRoute, public titu: TituloService, private fb: FormBuilder, private transportadorService: TransportadorService, private toastr: ToastrService, private spinner: NgxSpinnerService, public nav: NavService, private _changeDetectorRef: ChangeDetectorRef, private authService: AuthService, private buscarCep: BuscarCepService) { }
 
   ngOnInit() {
     this.permissoesDeTela();
@@ -71,6 +72,12 @@ export class TransportadorEditarComponent implements OnInit {
       },
       () => this.spinner.hide()
     );
+  }
+}
+
+onKeyDown(event: KeyboardEvent): void {
+  if (event.key === 'Enter') {
+    event.preventDefault();
   }
 }
 
@@ -114,9 +121,9 @@ export class TransportadorEditarComponent implements OnInit {
           Validators.maxLength(50),
         ],
       ],
-      endereco: [null, Validators.required],
+      logradouro: [null, Validators.required],
       bairro: [null, Validators.required],
-      municipio: [null, Validators.required],
+      localidade: [null, Validators.required],
       numero: [null, Validators.required],
       cep: [null, Validators.required],
       complemento: [null],
@@ -145,9 +152,10 @@ export class TransportadorEditarComponent implements OnInit {
   }
 
   EnviarCep(cepView: string): void {
-    this.transportadorService.getCep(cepView).subscribe(
+    this.buscarCep.buscarCep(cepView).subscribe(
       (_cepBD: any) => {
         this.cepBD = _cepBD;
+        console.log(_cepBD);
         Object.entries(this.cepBD).forEach(([key, value]) => {
           this.form.get(key.toLowerCase())?.setValue(value);
           this.form.get('pais')?.setValue('Brasil');

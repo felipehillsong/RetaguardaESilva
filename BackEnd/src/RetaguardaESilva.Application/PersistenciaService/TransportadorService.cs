@@ -42,12 +42,17 @@ namespace RetaguardaESilva.Application.PersistenciaService
                 {
                     model.Ativo = Convert.ToBoolean(Situacao.Ativo);
                     var transportadorCreateDTO = _mapper.Map<Transportador>(model);
+                    transportadorCreateDTO.Endereco = model.Logradouro;
+                    transportadorCreateDTO.Municipio = model.Localidade;
                     transportadorCreateDTO.Nome = _validacoesPersist.AcertarNome(transportadorCreateDTO.Nome);
                     _geralPersist.Add<Transportador>(transportadorCreateDTO);
                     if (await _geralPersist.SaveChangesAsync())
                     {
                         var retornoTransportador = await _transportadorPersist.GetTransportadorByIdAsync(transportadorCreateDTO.EmpresaId, transportadorCreateDTO.Id);
-                        return _mapper.Map<TransportadorCreateDTO>(retornoTransportador);
+                        var resultadoTransportador = _mapper.Map<TransportadorCreateDTO>(retornoTransportador);
+                        resultadoTransportador.Logradouro = retornoTransportador.Endereco;
+                        resultadoTransportador.Localidade = retornoTransportador.Municipio;
+                        return resultadoTransportador;
                     }
                     throw new Exception(mensagem);
                 }
@@ -76,12 +81,17 @@ namespace RetaguardaESilva.Application.PersistenciaService
                     else
                     {
                         var transportadorUpdateDTO = _mapper.Map<Transportador>(model);
+                        transportadorUpdateDTO.Endereco = model.Logradouro;
+                        transportadorUpdateDTO.Municipio = model.Localidade;
                         transportadorUpdateDTO.Nome = _validacoesPersist.AcertarNome(transportadorUpdateDTO.Nome);
                         _geralPersist.Update<Transportador>(transportadorUpdateDTO);
                         if (await _geralPersist.SaveChangesAsync())
                         {
                             var retornoTransportador = await _transportadorPersist.GetTransportadorByIdAsync(transportadorUpdateDTO.EmpresaId, transportadorUpdateDTO.Id);
-                            return _mapper.Map<TransportadorUpdateDTO>(retornoTransportador);
+                            var resultadoTransportador = _mapper.Map<TransportadorUpdateDTO>(retornoTransportador);
+                            resultadoTransportador.Logradouro = retornoTransportador.Endereco;
+                            resultadoTransportador.Localidade = retornoTransportador.Municipio;
+                            return resultadoTransportador;
                         }
                         throw new Exception(mensagem);
                     }
@@ -151,6 +161,8 @@ namespace RetaguardaESilva.Application.PersistenciaService
                 else
                 {
                     var resultadoTransportador = _mapper.Map<TransportadorDTO>(transportador);
+                    resultadoTransportador.Logradouro = transportador.Endereco;
+                    resultadoTransportador.Localidade = transportador.Municipio;
                     return resultadoTransportador;
                 }
             }

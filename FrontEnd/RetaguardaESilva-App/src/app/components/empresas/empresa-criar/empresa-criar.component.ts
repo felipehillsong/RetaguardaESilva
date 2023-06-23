@@ -11,6 +11,7 @@ import { AuthService } from 'src/app/services/login/auth.service';
 import { EmpresaService } from 'src/app/services/empresa/empresa.service';
 import { NavService } from 'src/app/services/nav/nav.service';
 import { TituloService } from 'src/app/services/titulo/titulo.service';
+import { BuscarCepService } from 'src/app/services/buscarCep/buscarCep.service';
 
 @Component({
   selector: 'app-empresa-criar',
@@ -30,7 +31,7 @@ export class EmpresaCriarComponent implements OnInit {
   valueError!:string;
 
 
-  constructor(private router: Router, public titu: TituloService, private fb: FormBuilder, private empresaService: EmpresaService, private toastr: ToastrService, private spinner: NgxSpinnerService, private datePipe: DatePipe, public nav: NavService, private _changeDetectorRef: ChangeDetectorRef, private authService: AuthService) { }
+  constructor(private router: Router, public titu: TituloService, private fb: FormBuilder, private empresaService: EmpresaService, private toastr: ToastrService, private spinner: NgxSpinnerService, private datePipe: DatePipe, public nav: NavService, private _changeDetectorRef: ChangeDetectorRef, private authService: AuthService, private buscarCep: BuscarCepService) { }
 
   ngOnInit() {
     this.permissoesDeTela();
@@ -53,6 +54,12 @@ export class EmpresaCriarComponent implements OnInit {
       },
       () => this.spinner.hide()
     );
+  }
+}
+
+onKeyDown(event: KeyboardEvent): void {
+  if (event.key === 'Enter') {
+    event.preventDefault();
   }
 }
 
@@ -96,9 +103,10 @@ export class EmpresaCriarComponent implements OnInit {
   }
 
   EnviarCep(cepView: string): void {
-    this.empresaService.getCep(cepView).subscribe(
+    this.buscarCep.buscarCep(cepView).subscribe(
       (_cepBD: any) => {
         this.cepBD = _cepBD;
+        console.log(_cepBD);
         Object.entries(this.cepBD).forEach(([key, value]) => {
           this.form.get(key.toLowerCase())?.setValue(value);
           this.form.get('pais')?.setValue('Brasil');

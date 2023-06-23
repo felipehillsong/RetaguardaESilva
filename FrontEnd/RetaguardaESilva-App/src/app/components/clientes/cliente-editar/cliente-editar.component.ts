@@ -106,6 +106,12 @@ export class ClienteEditarComponent implements OnInit {
   }
 }
 
+onKeyDown(event: KeyboardEvent): void {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+  }
+}
+
   public validation(): void {
     this.form = this.fb.group({
       nome: [

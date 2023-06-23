@@ -62,9 +62,9 @@ export class PedidoListaComponent implements OnInit {
     this.pedidoService.getPedidos(this.authService.empresaId()).subscribe(
       (_pedidos: Pedido[]) => {
         this.pedidos = _pedidos;
-        this.getNotasFiscais();
         this.pedidosFiltrados = this.pedidos;
         console.log(this.pedidos);
+        this.getNotasFiscais();
         this._changeDetectorRef.markForCheck();
       },
       error => console.log(error)
@@ -75,21 +75,23 @@ export class PedidoListaComponent implements OnInit {
     this.notaFiscalService.getNotasFiscais(this.authService.empresaId()).subscribe(
       (_notasFiscais: NotaFiscal[]) => {
         this.notasFiscais = _notasFiscais;
-        this.preencherNotasFiscais(this.notasFiscais);
+        console.log(this.notasFiscais);
+        this.preencherNotasFiscais(this.pedidos);
         this._changeDetectorRef.markForCheck();
       },
       error => console.log(error)
     );
   }
 
-  public preencherNotasFiscais(notasFiscais: NotaFiscal[]){
-    for(var i = 0; i < notasFiscais.length; i++){
-      const pedido = this.pedidos.find(pedido => pedido.id == this.notasFiscais[i].pedidoId);
-      if(this.pedidos.find(pedido => pedido.id == pedido?.id)){
-        this.pedidos[i].possuiNotaFiscal = true;
+  public preencherNotasFiscais(pedidos: Pedido[]){
+     for (const pedido of pedidos) {
+      const notaFiscal = this.notasFiscais.find(nf => nf.pedidoId === pedido.id);
+      if (notaFiscal) {
+        pedido.possuiNotaFiscal = true;
+      }else{
+        pedido.possuiNotaFiscal = false;
       }
     }
-
   }
 
   editar(id: number): void {

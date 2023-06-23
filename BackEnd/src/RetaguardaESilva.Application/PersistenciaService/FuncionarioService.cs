@@ -39,12 +39,17 @@ namespace RetaguardaESilva.Application.PersistenciaService
             {
                 model.Ativo = Convert.ToBoolean(Situacao.Ativo);
                 var funcionarioCreateDTO = _mapper.Map<Funcionario>(model);
+                funcionarioCreateDTO.Endereco = model.Logradouro;
+                funcionarioCreateDTO.Municipio = model.Localidade;
                 funcionarioCreateDTO.Nome = _validacoesPersist.AcertarNome(funcionarioCreateDTO.Nome);
                 _geralPersist.Add<Funcionario>(funcionarioCreateDTO);
                 if (await _geralPersist.SaveChangesAsync())
                 {
                     var retornoFuncionario = await _funcionarioPersist.GetFuncionarioByIdAsync(funcionarioCreateDTO.EmpresaId, funcionarioCreateDTO.Id);
-                    return _mapper.Map<FuncionarioCreateDTO>(retornoFuncionario);
+                    var resultadoFuncionario = _mapper.Map<FuncionarioCreateDTO>(retornoFuncionario);
+                    resultadoFuncionario.Logradouro = retornoFuncionario.Endereco;
+                    resultadoFuncionario.Localidade = retornoFuncionario.Municipio;
+                    return resultadoFuncionario;
                 }
                 throw new Exception(mensagem);
             }
@@ -67,13 +72,18 @@ namespace RetaguardaESilva.Application.PersistenciaService
                     }
                     else
                     {
-                        var funcionarioCreateDTO = _mapper.Map<Funcionario>(model);
-                        funcionarioCreateDTO.Nome = _validacoesPersist.AcertarNome(funcionarioCreateDTO.Nome);
-                        _geralPersist.Update<Funcionario>(funcionarioCreateDTO);
+                        var funcionarioUptadeDTO = _mapper.Map<Funcionario>(model);
+                        funcionarioUptadeDTO.Endereco = model.Logradouro;
+                        funcionarioUptadeDTO.Municipio = model.Localidade;
+                        funcionarioUptadeDTO.Nome = _validacoesPersist.AcertarNome(funcionarioUptadeDTO.Nome);
+                        _geralPersist.Update<Funcionario>(funcionarioUptadeDTO);
                         if (await _geralPersist.SaveChangesAsync())
                         {
-                            var retornoFuncionario = await _funcionarioPersist.GetFuncionarioByIdAsync(funcionarioCreateDTO.EmpresaId, funcionarioCreateDTO.Id);
-                            return _mapper.Map<FuncionarioUpdateDTO>(retornoFuncionario);
+                            var retornoFuncionario = await _funcionarioPersist.GetFuncionarioByIdAsync(funcionarioUptadeDTO.EmpresaId, funcionarioUptadeDTO.Id);
+                            var resultadoFuncionario = _mapper.Map<FuncionarioUpdateDTO>(retornoFuncionario);
+                            resultadoFuncionario.Logradouro = retornoFuncionario.Endereco;
+                            resultadoFuncionario.Localidade = retornoFuncionario.Municipio;
+                            return resultadoFuncionario;
                         }
                         throw new Exception(MensagemDeErro.ErroAoAtualizar);
                     }
@@ -143,6 +153,8 @@ namespace RetaguardaESilva.Application.PersistenciaService
                 else
                 {
                     var resultadoFuncionario = _mapper.Map<FuncionarioDTO>(funcionario);
+                    resultadoFuncionario.Logradouro = funcionario.Endereco;
+                    resultadoFuncionario.Localidade = funcionario.Municipio;
                     return resultadoFuncionario;
                 }
             }
@@ -164,6 +176,8 @@ namespace RetaguardaESilva.Application.PersistenciaService
                 else
                 {
                     var resultadoFuncionario = _mapper.Map<FuncionarioDTO>(funcionario);
+                    resultadoFuncionario.Logradouro = funcionario.Endereco;
+                    resultadoFuncionario.Localidade = funcionario.Municipio;
                     return resultadoFuncionario;
                 }
             }

@@ -42,12 +42,17 @@ namespace RetaguardaESilva.Application.PersistenciaService
                 {
                     model.Ativo = Convert.ToBoolean(Situacao.Ativo);
                     var fornecedorCreateDTO = _mapper.Map<Fornecedor>(model);
+                    fornecedorCreateDTO.Endereco = model.Logradouro;
+                    fornecedorCreateDTO.Municipio = model.Localidade;
                     fornecedorCreateDTO.Nome = _validacoesPersist.AcertarNome(fornecedorCreateDTO.Nome);
                     _geralPersist.Add<Fornecedor>(fornecedorCreateDTO);
                     if (await _geralPersist.SaveChangesAsync())
                     {
                         var retornoFornecedor = await _fornecedorPersist.GetFornecedorByIdAsync(fornecedorCreateDTO.EmpresaId, fornecedorCreateDTO.Id);
-                        return _mapper.Map<FornecedorCreateDTO>(retornoFornecedor);
+                        var resultadoFornecedor = _mapper.Map<FornecedorCreateDTO>(retornoFornecedor);
+                        resultadoFornecedor.Logradouro = retornoFornecedor.Endereco;
+                        resultadoFornecedor.Localidade = retornoFornecedor.Municipio;
+                        return resultadoFornecedor;
                     }
                     throw new Exception(MensagemDeErro.ErroAoAtualizar);
                 }
@@ -76,12 +81,17 @@ namespace RetaguardaESilva.Application.PersistenciaService
                     else
                     {
                         var fornecedorUpdateDTO = _mapper.Map<Fornecedor>(model);
+                        fornecedorUpdateDTO.Endereco = model.Logradouro;
+                        fornecedorUpdateDTO.Municipio = model.Localidade;
                         fornecedorUpdateDTO.Nome = _validacoesPersist.AcertarNome(fornecedorUpdateDTO.Nome);
                         _geralPersist.Update<Fornecedor>(fornecedorUpdateDTO);
                         if (await _geralPersist.SaveChangesAsync())
                         {
                             var retornoFornecedor = await _fornecedorPersist.GetFornecedorByIdAsync(fornecedorUpdateDTO.EmpresaId, fornecedorUpdateDTO.Id);
-                            return _mapper.Map<FornecedorUpdateDTO>(retornoFornecedor);
+                            var resultadoFornecedor = _mapper.Map<FornecedorUpdateDTO>(retornoFornecedor);
+                            resultadoFornecedor.Logradouro = retornoFornecedor.Endereco;
+                            resultadoFornecedor.Localidade = retornoFornecedor.Municipio;
+                            return resultadoFornecedor;
                         }
                         throw new Exception(mensagem);
                     }
@@ -154,6 +164,8 @@ namespace RetaguardaESilva.Application.PersistenciaService
                 else
                 {
                     var resultadoFornecedor = _mapper.Map<FornecedorDTO>(fornecedor);
+                    resultadoFornecedor.Logradouro = fornecedor.Endereco;
+                    resultadoFornecedor.Localidade = fornecedor.Municipio;
                     return resultadoFornecedor;
                 }
             }
