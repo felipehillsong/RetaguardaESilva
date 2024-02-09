@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "G55M9IKiNPr4BmTLO7Ugf41tEGZvTSsLZlrDF844ddTM0DnXGA7huull31X8A6gTCoIvvjPfvX7GF48jSej7Og==",
+  "dgSpecHash": "Gs7T8eJ9anQz2ZGQT0nxFD0c5RIjZbq/H0E04nCWmV2AO5HyMzxi3ERpQ8uuR+lKmGPD7J6UTWfC5+YUvbPorg==",
   "success": true,
   "projectFilePath": "C:\\Users\\Felipe Silva\\Documents\\RetaguardaESilva\\BackEnd\\src\\RetaguardaESilva.Domain\\RetaguardaESilva.Domain.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Felipe Silva\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
+    "C:\\Users\\Felipe Silva\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
   ],
   "logs": []
 }
