@@ -66,3 +66,4 @@ C:\Users\Felipe Silva\Documents\RetaguardaESilva\BackEnd\src\RetaguardaESilva.Ap
 C:\Users\Felipe Silva\Documents\RetaguardaESilva\BackEnd\src\RetaguardaESilva.Application\obj\Debug\net6.0\refint\RetaguardaESilva.Application.dll
 C:\Users\Felipe Silva\Documents\RetaguardaESilva\BackEnd\src\RetaguardaESilva.Application\obj\Debug\net6.0\RetaguardaESilva.Application.pdb
 C:\Users\Felipe Silva\Documents\RetaguardaESilva\BackEnd\src\RetaguardaESilva.Application\obj\Debug\net6.0\ref\RetaguardaESilva.Application.dll
+C:\Users\Felipe Silva\Documents\RetaguardaESilva\BackEnd\src\RetaguardaESilva.Application\obj\Debug\net6.0\RetaguardaESilva.Application.sourcelink.json

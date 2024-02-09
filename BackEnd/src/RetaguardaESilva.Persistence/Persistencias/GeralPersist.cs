@@ -1,14 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using RetaguardaESilva.Domain.Models;
-using RetaguardaESilva.Persistence.Data;
+﻿using RetaguardaESilva.Persistence.Data;
 using RetaguardaESilva.Persistence.Contratos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ProEventos.Persistence.Persistencias
+namespace RetaguardaESilva.Persistence.Persistencias
 {
     public class GeralPersist : IGeralPersist
     {

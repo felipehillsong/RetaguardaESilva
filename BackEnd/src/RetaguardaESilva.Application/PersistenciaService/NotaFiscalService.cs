@@ -1,23 +1,11 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using RetaguardaESilva.Application.ContratosServices;
 using RetaguardaESilva.Application.DTO;
-using RetaguardaESilva.Application.Helpers;
 using RetaguardaESilva.Domain.Enumeradores;
 using RetaguardaESilva.Domain.Mensagem;
 using RetaguardaESilva.Domain.Models;
-using RetaguardaESilva.Domain.ViewModels;
 using RetaguardaESilva.Persistence.Contratos;
-using RetaguardaESilva.Persistence.Persistencias;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Transactions;
 
 namespace RetaguardaESilva.Application.PersistenciaService
 {

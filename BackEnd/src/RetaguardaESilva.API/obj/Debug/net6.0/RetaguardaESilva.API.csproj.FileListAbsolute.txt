@@ -1130,3 +1130,4 @@ C:\Users\Felipe Silva\Documents\RetaguardaESilva\BackEnd\src\RetaguardaESilva.AP
 C:\Users\Felipe Silva\Documents\RetaguardaESilva\BackEnd\src\RetaguardaESilva.API\obj\Debug\net6.0\RetaguardaESilva.API.pdb
 C:\Users\Felipe Silva\Documents\RetaguardaESilva\BackEnd\src\RetaguardaESilva.API\obj\Debug\net6.0\RetaguardaESilva.API.genruntimeconfig.cache
 C:\Users\Felipe Silva\Documents\RetaguardaESilva\BackEnd\src\RetaguardaESilva.API\obj\Debug\net6.0\ref\RetaguardaESilva.API.dll
+C:\Users\Felipe Silva\Documents\RetaguardaESilva\BackEnd\src\RetaguardaESilva.API\obj\Debug\net6.0\RetaguardaESilva.API.sourcelink.json

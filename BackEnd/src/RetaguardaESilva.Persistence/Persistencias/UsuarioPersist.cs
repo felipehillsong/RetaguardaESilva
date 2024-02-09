@@ -2,11 +2,6 @@
 using RetaguardaESilva.Domain.Models;
 using RetaguardaESilva.Persistence.Data;
 using RetaguardaESilva.Persistence.Contratos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RetaguardaESilva.Persistence.Persistencias
 {
@@ -49,7 +44,7 @@ namespace RetaguardaESilva.Persistence.Persistencias
         }
         public Permissao GetPermissaoByIdAsync(int empresaId, int usuarioId, int permissaoId)
         {
-            return _context.Permissao.AsNoTracking().Where(p => p.EmpresaId == empresaId && p.UsuarioId == usuarioId && p.Id == permissaoId).OrderBy(p => p.Id).FirstOrDefault();          
+            return _context.Permissao.AsNoTracking().Where(p => p.EmpresaId == empresaId && p.UsuarioId == usuarioId && p.Id == permissaoId).OrderBy(p => p.Id).FirstOrDefault();
         }
     }
 }

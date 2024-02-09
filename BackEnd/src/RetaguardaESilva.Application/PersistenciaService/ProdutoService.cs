@@ -1,17 +1,10 @@
 ﻿using RetaguardaESilva.Application.ContratosServices;
 using RetaguardaESilva.Domain.Models;
-using RetaguardaESilva.Persistence.Data;
 using RetaguardaESilva.Persistence.Contratos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using RetaguardaESilva.Domain.Mensagem;
 using RetaguardaESilva.Application.DTO;
 using AutoMapper;
 using RetaguardaESilva.Domain.Enumeradores;
-using RetaguardaESilva.Persistence.Migrations;
 
 namespace RetaguardaESilva.Application.PersistenciaService
 {

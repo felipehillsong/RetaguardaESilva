@@ -2,11 +2,6 @@
 using RetaguardaESilva.Domain.Models;
 using RetaguardaESilva.Persistence.Contratos;
 using RetaguardaESilva.Persistence.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RetaguardaESilva.Persistence.Persistencias
 {

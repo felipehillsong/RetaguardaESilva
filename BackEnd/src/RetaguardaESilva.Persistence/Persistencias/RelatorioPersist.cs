@@ -3,14 +3,7 @@ using RetaguardaESilva.Domain.Enumeradores;
 using RetaguardaESilva.Domain.Models;
 using RetaguardaESilva.Persistence.Data;
 using RetaguardaESilva.Persistence.Contratos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using RetaguardaESilva.Domain.ViewModels;
-using RetaguardaESilva.Persistence.Migrations;
-using System.Runtime.ConstrainedExecution;
 using RetaguardaESilva.Domain.Mensagem;
 
 namespace RetaguardaESilva.Persistence.Persistencias

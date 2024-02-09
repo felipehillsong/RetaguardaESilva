@@ -2,11 +2,6 @@
 using RetaguardaESilva.Domain.Models;
 using RetaguardaESilva.Persistence.Data;
 using RetaguardaESilva.Persistence.Contratos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using RetaguardaESilva.Domain.Enumeradores;
 
 namespace RetaguardaESilva.Persistence.Persistencias
@@ -30,7 +25,7 @@ namespace RetaguardaESilva.Persistence.Persistencias
         }
 
         public async Task<Estoque> GetEstoqueByProdutoIdAsync(int empresaId, int produtoId)
-        {            
+        {
             return await _context.Estoque.AsNoTracking().Where(e => e.ProdutoId == produtoId && e.EmpresaId == empresaId && e.StatusExclusao == Convert.ToBoolean(StatusProduto.ProdutoNaoExcluido)).FirstOrDefaultAsync();
         }
 

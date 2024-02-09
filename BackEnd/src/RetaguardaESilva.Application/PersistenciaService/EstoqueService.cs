@@ -4,14 +4,7 @@ using RetaguardaESilva.Application.DTO;
 using RetaguardaESilva.Domain.Enumeradores;
 using RetaguardaESilva.Domain.Mensagem;
 using RetaguardaESilva.Domain.Models;
-using RetaguardaESilva.Domain.ViewModels;
 using RetaguardaESilva.Persistence.Contratos;
-using RetaguardaESilva.Persistence.Persistencias;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RetaguardaESilva.Application.PersistenciaService
 {

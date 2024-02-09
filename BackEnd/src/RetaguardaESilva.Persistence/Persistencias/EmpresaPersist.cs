@@ -1,13 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RetaguardaESilva.Domain.Enumeradores;
 using RetaguardaESilva.Domain.Models;
 using RetaguardaESilva.Persistence.Data;
 using RetaguardaESilva.Persistence.Contratos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RetaguardaESilva.Persistence.Persistencias
 {
@@ -27,6 +21,6 @@ namespace RetaguardaESilva.Persistence.Persistencias
         public async Task<Empresa> GetEmpresaByIdAsync(int empresaId)
         {
             return await _context.Empresa.AsNoTracking().Where(e => e.Id == empresaId).FirstOrDefaultAsync();
-        }        
+        }
     }
 }
